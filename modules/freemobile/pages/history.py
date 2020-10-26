@@ -95,7 +95,7 @@ class DetailsPage(LoggedPage, BadUTF8Page):
         voice.label = CleanText('div[@class="titre"]/p')(div)
         if inter:
             voice.label = voice.label + " (international)"
-            voice.id = voice.id + "-inter"
+            voice.id += "-inter"
         voice.price = CleanDecimal('div[@class="horsForfait"]/p/span', default=Decimal(0), replace_dots=True)(div)
         voice1 = CleanText('.//span[@class="actif"][1]')(voicediv)
         voice2 = CleanText('.//span[@class="actif"][2]')(voicediv)

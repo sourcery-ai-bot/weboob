@@ -102,8 +102,7 @@ class Comment(Content):
     def iter_all_comments(self):
         for comment in self.comments:
             yield comment
-            for c in comment.iter_all_comments():
-                yield c
+            yield from comment.iter_all_comments()
 
     def __repr__(self):
         return u"<Comment id=%r author=%r title=%r>" % (self.id, self.author, self.title)
@@ -150,8 +149,7 @@ class Article(Content):
     def iter_all_comments(self):
         for comment in self.comments:
             yield comment
-            for c in comment.iter_all_comments():
-                yield c
+            yield from comment.iter_all_comments()
 
 
 class CommentPage(DLFPPage):
@@ -220,7 +218,4 @@ class NodePage(DLFPPage):
         except BrokenPageError:
             return []
 
-        l = []
-        for li in div.find('ul').findall('li'):
-            l.append(li.text)
-        return l
+        return [li.text for li in div.find('ul').findall('li')]

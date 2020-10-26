@@ -49,7 +49,7 @@ class AccountInvestment(IsinMixin, Page):
         Decimal = CleanDecimal(replace_dots=True).filter
 
         for tr in self._tr_list(self.document):
-            cells = list(el_to_string(td) for td in self._td_list(tr))
+            cells = [el_to_string(td) for td in self._td_list(tr)]
             link = unicode(self._link(tr)[0])
 
             '''

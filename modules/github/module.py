@@ -47,10 +47,7 @@ class GithubModule(Module, CapBugTracker):
 
     def create_default_browser(self):
         username = self.config['username'].get()
-        if username:
-            password = self.config['password'].get()
-        else:
-            password = None
+        password = self.config['password'].get() if username else None
         return self.create_browser(username, password)
 
     def get_project(self, _id):

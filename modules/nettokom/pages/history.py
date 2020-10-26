@@ -68,7 +68,7 @@ class HistoryPage(Page):
                 attrib = tr.attrib["class"]
             except:
                 continue
-            if attrib == "even" or attrib == "odd":
+            if attrib in ["even", "odd"]:
                 label = u''
                 tddate = tr.find('td[@class="middle nowrap"]')
                 for td in tr.xpath('td[@class="long"]'):

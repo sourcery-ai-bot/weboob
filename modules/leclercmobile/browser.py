@@ -121,8 +121,7 @@ class Leclercmobile(Browser):
         mimetype = response.info().get('Content-Type', '').split(';')[0]
         if mimetype == "application/pdf":
             pdf = PdfPage(StringIO.StringIO(response.read()))
-            for detail in pdf.get_details():
-                yield detail
+            yield from pdf.get_details()
 
     def iter_bills(self, parentid):
         if not self.is_on_page(HistoryPage):

@@ -45,8 +45,7 @@ class AmericanExpressModule(Module, CapBank):
 
     def iter_accounts(self):
         with self.browser:
-            for account in self.browser.get_accounts_list():
-                yield account
+            yield from self.browser.get_accounts_list()
 
     def get_account(self, _id):
         with self.browser:

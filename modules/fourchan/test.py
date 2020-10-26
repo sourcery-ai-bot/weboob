@@ -29,16 +29,11 @@ class FourChanTest(BackendTest):
         tot = 0
         for thread in self.backend.iter_threads():
             thread = self.backend.fillobj(thread, 'root')
-            count = 0
-            for m in thread.iter_all_messages():
-                count += 1
+            count = sum(1 for _ in thread.iter_all_messages())
             debug('Count: %s' % count)
             tot += count
 
         debug('Total messages: %s' % tot)
 
-        count = 0
-        for message in self.backend.iter_unread_messages():
-            count += 1
-
+        count = sum(1 for _ in self.backend.iter_unread_messages())
         debug('Unread messages: %s' % count)

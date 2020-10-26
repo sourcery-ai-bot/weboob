@@ -94,5 +94,4 @@ class HSBC(LoginBrowser):
             return self._get_history()
 
     def _get_history(self):
-        for tr in self.page.get_history():
-            yield tr
+        yield from self.page.get_history()

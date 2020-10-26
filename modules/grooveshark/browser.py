@@ -77,10 +77,7 @@ class GroovesharkBrowser(Browser):
         if self.username and self.password:
             method = 'authenticateUser'
 
-            parameters = {}
-            parameters['username'] = self.username
-            parameters['password'] = self.password
-
+            parameters = {'username': self.username, 'password': self.password}
             response = self.API_post(method, parameters, self.create_token(method))
             self.user_id = response['result']['userID']
 
@@ -90,19 +87,18 @@ class GroovesharkBrowser(Browser):
     def get_all_user_playlists(self):
         if self.is_logged():
             method = 'userGetPlaylists'
-            parameters = {}
-            parameters['userID'] = self.user_id
+            parameters = {'userID': self.user_id}
             response = self.API_post(method, parameters, self.create_token(method))
             return self.create_playlists_from_result(response['result']['Playlists'])
         return []
 
     def create_search_parameter(self, _type, pattern):
-        parameters = {}
-        parameters['query'] = pattern.encode(self.ENCODING)
-        parameters['type'] = [_type]
-        parameters['guts'] = 0
-        parameters['ppOverr'] = ''
-        return parameters
+        return {
+            'query': pattern.encode(self.ENCODING),
+            'type': [_type],
+            'guts': 0,
+            'ppOverr': '',
+        }
 
     def search_audio(self, pattern):
         method = 'getResultsFromSearch'
@@ -124,11 +120,12 @@ class GroovesharkBrowser(Browser):
     def get_stream_url_from_song_id(self, _id):
         method = 'getStreamKeyFromSongIDEx'
         try:
-            parameters = {}
-            parameters['prefetch'] = False
-            parameters['mobile'] = True
-            parameters['songID'] = int(_id)
-            parameters['country'] = self.HEADER['country']
+            parameters = {
+                'prefetch': False,
+                'mobile': True,
+                'songID': int(_id),
+                'country': self.HEADER['country'],
+            }
 
             response = self.API_post(method, parameters, self.create_token(method))
 
@@ -145,8 +142,7 @@ class GroovesharkBrowser(Browser):
 
     def get_album_by_id(self, _id):
         method = 'getAlbumByID'
-        parameters = {}
-        parameters['albumID'] = _id
+        parameters = {'albumID': _id}
         response = self.API_post(method, parameters, self.create_token(method))
         return self.create_album(response['result'])
 
@@ -173,11 +169,12 @@ class GroovesharkBrowser(Browser):
     def get_all_songs_from_album(self, album_id):
         method = 'albumGetAllSongs'
 
-        parameters = {}
-        parameters['prefetch'] = False
-        parameters['mobile'] = True
-        parameters['albumID'] = int(album_id)
-        parameters['country'] = self.HEADER['country']
+        parameters = {
+            'prefetch': False,
+            'mobile': True,
+            'albumID': int(album_id),
+            'country': self.HEADER['country'],
+        }
 
         response = self.API_post(method, parameters, self.create_token(method))
         return self.create_audio_from_album_result(response['result'])
@@ -222,9 +219,7 @@ class GroovesharkBrowser(Browser):
     def get_all_songs_from_playlist(self, playlistID):
         method = 'getPlaylistByID'
 
-        parameters = {}
-        parameters['playlistID'] = playlistID
-
+        parameters = {'playlistID': playlistID}
         response = self.API_post(method, parameters, self.create_token(method))
         return self.create_audio_from_album_result(response['result']['Songs'])
 
@@ -247,10 +242,11 @@ class GroovesharkBrowser(Browser):
     def mark_song_downloaded_ex(self, response):
         method = 'markSongDownloadedEx'
 
-        parameters = {}
-        parameters['streamKey'] = response['streamKey']
-        parameters['streamServerID'] = response['streamServerID']
-        parameters['songID'] = response['SongID']
+        parameters = {
+            'streamKey': response['streamKey'],
+            'streamServerID': response['streamServerID'],
+            'songID': response['SongID'],
+        }
 
         response = self.API_post(method, parameters, self.create_token(method))
 
@@ -271,8 +267,7 @@ class GroovesharkBrowser(Browser):
         return self.parse_response(response)
 
     def create_json_data(self, method, parameters, token):
-        data = {}
-        data['header'] = self.HEADER
+        data = {'header': self.HEADER}
         data['header']['client'] = self.GROOVESHARK_CONSTANTS[0]
         data['header']['clientRevision'] = self.GROOVESHARK_CONSTANTS[1]
         if(token is not None):

@@ -107,10 +107,8 @@ class BanquePopulaire(Browser):
 
         next_pages = []
 
-        for a in self.page.iter_accounts(next_pages):
-            yield a
-
-        while len(next_pages) > 0:
+        yield from self.page.iter_accounts(next_pages)
+        while next_pages:
             next_page = next_pages.pop()
 
             if not self.is_on_page(AccountsFullPage):
@@ -125,8 +123,7 @@ class BanquePopulaire(Browser):
             next_page['token'] = self.page.build_token(self.page.get_token())
             self.location('/cyber/internet/ContinueTask.do', urllib.urlencode(next_page))
 
-            for a in self.page.iter_accounts(next_pages):
-                yield a
+            yield from self.page.iter_accounts(next_pages)
 
     def get_account(self, id):
         assert isinstance(id, basestring)
@@ -140,11 +137,7 @@ class BanquePopulaire(Browser):
     def get_history(self, account, coming=False):
         account = self.get_account(account.id)
 
-        if coming:
-            params = account._coming_params
-        else:
-            params = account._params
-
+        params = account._coming_params if coming else account._params
         if params is None:
             return
 
@@ -167,9 +160,7 @@ class BanquePopulaire(Browser):
             assert self.is_on_page(TransactionsPage)
             self.token = self.page.get_token()
 
-            for tr in self.page.get_history(account, coming):
-                yield tr
-
+            yield from self.page.get_history(account, coming)
             next_params = self.page.get_next_params()
             if next_params is None:
                 return

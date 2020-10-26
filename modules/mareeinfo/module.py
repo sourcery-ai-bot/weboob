@@ -59,8 +59,7 @@ class MareeinfoModule(Module, CapGauge):
 
         gauge = self.browser.get_harbor_infos(gauge)
         if pattern is None:
-            for sensor in gauge.sensors:
-                yield sensor
+            yield from gauge.sensors
         else:
             lowpattern = pattern.lower()
             for sensor in gauge.sensors:

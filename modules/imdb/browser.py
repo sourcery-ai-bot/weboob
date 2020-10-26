@@ -108,8 +108,6 @@ class ImdbBrowser(Browser):
         thumbnail_url = NotAvailable
         other_titles = []
         genres = []
-        roles = {}
-
         if 'Title' not in jres:
             return
         title = htmlparser.unescape(unicode(jres['Title'].strip()))
@@ -155,9 +153,12 @@ class ImdbBrowser(Browser):
             pitch = unicode(jres['Plot'])
         if 'imdbRating' in jres and 'imdbVotes' in jres:
             note = u'%s/10 (%s votes)' % (jres['imdbRating'], jres['imdbVotes'])
-        for r in ['Actors', 'Director', 'Writer']:
-            if '%s' % r in jres.keys():
-                roles['%s' % r] = [('N/A',e) for e in jres['%s' % r].split(', ')]
+        roles = {
+            '%s' % r: [('N/A', e) for e in jres['%s' % r].split(', ')]
+            for r in ['Actors', 'Director', 'Writer']
+            if '%s' % r in jres.keys()
+        }
+
 
         movie = Movie(id, title)
         movie.other_titles = other_titles
@@ -189,8 +190,7 @@ class ImdbBrowser(Browser):
     def iter_movie_persons(self, movie_id, role):
         self.location('http://www.imdb.com/title/%s/fullcredits' % movie_id)
         assert self.is_on_page(MovieCrewPage)
-        for p in self.page.iter_persons(role):
-            yield p
+        yield from self.page.iter_persons(role)
 
     def iter_person_movies(self, person_id, role):
         self.location('http://www.imdb.com/name/%s' % person_id)
@@ -200,14 +200,12 @@ class ImdbBrowser(Browser):
     def iter_person_movies_ids(self, person_id):
         self.location('http://www.imdb.com/name/%s' % person_id)
         assert self.is_on_page(PersonPage)
-        for movie in self.page.iter_movies_ids():
-            yield movie
+        yield from self.page.iter_movies_ids()
 
     def iter_movie_persons_ids(self, movie_id):
         self.location('http://www.imdb.com/title/%s/fullcredits' % movie_id)
         assert self.is_on_page(MovieCrewPage)
-        for person in self.page.iter_persons_ids():
-            yield person
+        yield from self.page.iter_persons_ids()
 
     def get_movie_releases(self, id, country):
         self.location('http://www.imdb.com/title/%s/releaseinfo' % id)

@@ -85,10 +85,7 @@ class FeedlyBrowser(LoginBrowser):
 
     @need_login
     def get_logged_feeds(self, category):
-        if category == 'global.saved':
-            type = 'tag'
-        else:
-            type = 'category'
+        type = 'tag' if category == 'global.saved' else 'category'
         url = 'user/%s/%s/%s' % (self.user_id, type, category)
         return self.get_unread_feed(url)
 

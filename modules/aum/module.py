@@ -75,10 +75,7 @@ class AuMModule(Module, CapMessages, CapMessagesPost, CapDating, CapChat, CapCon
 
     def __init__(self, *args, **kwargs):
         Module.__init__(self, *args, **kwargs)
-        if self.config['antispam'].get():
-            self.antispam = AntiSpam()
-        else:
-            self.antispam = None
+        self.antispam = AntiSpam() if self.config['antispam'].get() else None
 
     def create_default_browser(self):
         return self.create_browser(self.config['username'].get(),

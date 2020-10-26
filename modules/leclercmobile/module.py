@@ -50,8 +50,7 @@ class LeclercMobileModule(Module, CapBill):
                                    self.config['password'].get())
 
     def iter_subscription(self):
-        for subscription in self.browser.get_subscription_list():
-            yield subscription
+        yield from self.browser.get_subscription_list()
 
     def get_subscription(self, _id):
         if not _id.isdigit():
@@ -82,14 +81,12 @@ class LeclercMobileModule(Module, CapBill):
             subscription = self.get_subscription(subscription)
 
         with self.browser:
-            for bill in self.browser.iter_bills(subscription.id):
-                yield bill
+            yield from self.browser.iter_bills(subscription.id)
 
     # The subscription is actually useless, but maybe for the futur...
     def get_details(self, subscription):
         with self.browser:
-            for detail in self.browser.get_details():
-                yield detail
+            yield from self.browser.get_details()
 
     def download_bill(self, bill):
         if not isinstance(bill, Bill):

@@ -284,11 +284,11 @@ class TransactionsPage(Page):
                 heads = tr.findall('th')
                 for i, head in enumerate(heads):
                     key = self.parser.tocleanstring(head)
-                    if key == u'Débit':
-                        self.COL_DEBIT = i - len(heads)
                     if key == u'Crédit':
                         self.COL_CREDIT = i - len(heads)
-                    if key == u'Libellé':
+                    elif key == u'Débit':
+                        self.COL_DEBIT = i - len(heads)
+                    elif key == u'Libellé':
                         self.COL_TEXT = i
 
             if not tr.attrib.get('class', '').startswith('ligne-'):

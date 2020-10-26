@@ -61,7 +61,7 @@ class EventListPage(HTMLPage):
             m = re.match('.*/events\?start_date=(\d{4})-(\d{2})-(\d{2})(&region=.*)?', self.page.url)
             if m:
                 start = date(year=int(m.group(1)), month=int(m.group(2)), day=1)
-                region = m.group(4) if m.group(4) else ''
+                region = m.group(4) or ''
                 try:
                     next_month = start.replace(month=start.month + 1)
                 except ValueError:
@@ -107,15 +107,9 @@ class EventListPage(HTMLPage):
             def is_valid_event(self, event, city, categories):
                 if city and city != '' and city.upper() != event.city.upper():
                     return False
-                if categories and len(categories) > 0 and event.category not in categories:
-                    return False
-                return True
+                return not categories or len(categories) <= 0 or event.category in categories
 
             def is_event_in_valid_period(self, event_date, date_from, date_to):
-                if event_date >= datetime.combine(date_from, time.min):
-                    if not date_to:
-                        return True
-                    else:
-                        if event_date <= date_to:
-                            return True
-                return False
+                return event_date >= datetime.combine(date_from, time.min) and (
+                    event_date <= date_to or not date_to
+                )

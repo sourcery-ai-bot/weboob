@@ -44,24 +44,24 @@ class HelloBankVirtKeyboard(VirtKeyboard):
     color = 17
 
     def __init__(self, basepage):
-        coords = {}
-        coords["01"] = (31, 28, 49, 49)
-        coords["02"] = (108, 28, 126, 49)
-        coords["03"] = (185, 28, 203, 49)
-        coords["04"] = (262, 28, 280, 49)
-        coords["05"] = (339, 28, 357, 49)
-        coords["06"] = (31, 100, 49, 121)
-        coords["07"] = (108, 100, 126, 121)
-        coords["08"] = (185, 100, 203, 121)
-        coords["09"] = (262, 100, 280, 121)
-        coords["10"] = (339, 100, 357, 121)
+        coords = {
+            "01": (31, 28, 49, 49),
+            "02": (108, 28, 126, 49),
+            "03": (185, 28, 203, 49),
+            "04": (262, 28, 280, 49),
+            "05": (339, 28, 357, 49),
+            "06": (31, 100, 49, 121),
+            "07": (108, 100, 126, 121),
+            "08": (185, 100, 203, 121),
+            "09": (262, 100, 280, 121),
+            "10": (339, 100, 357, 121),
+        }
 
         VirtKeyboard.__init__(self, basepage.browser.openurl(self.url % time.time()), coords, self.color)
         self.check_symbols(self.symbols, basepage.browser.responses_dirname)
 
     def get_symbol_code(self, md5sum):
-        code = VirtKeyboard.get_symbol_code(self, md5sum)
-        return code
+        return VirtKeyboard.get_symbol_code(self, md5sum)
 
     def get_string_code(self, string):
         code = ''

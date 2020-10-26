@@ -110,11 +110,7 @@ class AccountHistoryPage(Page):
 
             operation.parse(date=date_oper, raw=label, vdate=date_val)
 
-            if amount[1] == u'\xa0':
-                amount = amount[0]
-            else:
-                amount = amount[1]
-
+            amount = amount[0] if amount[1] == u'\xa0' else amount[1]
             operation.set_amount(amount)
 
             yield operation

@@ -35,10 +35,7 @@ class LoginPage(Page):
         self.browser.submit(nologin=True)
 
     def has_redirect(self):
-        if len(self.document.getroot().xpath('//form')) > 0:
-            return False
-        else:
-            return True
+        return len(self.document.getroot().xpath('//form')) <= 0
 
 
 class Login2Page(Page):
@@ -98,7 +95,7 @@ class AccountsPage(Page):
                 account._card_links = []
                 accounts.append(account)
 
-        if len(accounts) == 0:
+        if not accounts:
             # Sometimes, accounts are only in javascript...
             for script in self.document.xpath('//script'):
                 text = script.text

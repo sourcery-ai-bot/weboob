@@ -88,9 +88,8 @@ class PdfPage():
         pdffile.flush()
         subprocess.call([cmd, pdffile.name, temptxt], stdout=stdout)
         pdffile.close()
-        txtfile = open(temptxt, 'r')
-        txt = txtfile.read()
-        txtfile.close()
+        with open(temptxt, 'r') as txtfile:
+            txt = txtfile.read()
         os.remove(temptxt)
         return txt
 
@@ -205,6 +204,4 @@ class PdfPage():
             page = txt.split('GAZ NATUREL')[1].split('TOTAL GAZ NATUREL TTC')[0]
         elif label == u'Electricité':
             page = txt.split('ELECTRICITE')[1].split('TOTAL ELECTRICITE TTC')[0]
-        else:
-            pass
         return self._parse_page(page)

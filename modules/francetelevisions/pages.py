@@ -32,8 +32,7 @@ from weboob.browser.filters.json import Dict
 class DictElement(ListElement):
     def find_elements(self):
         if self.item_xpath is not None:
-            for el in self.el.get('reponse').get(self.item_xpath):
-                yield el
+            yield from self.el.get('reponse').get(self.item_xpath)
         else:
             yield self.el
 

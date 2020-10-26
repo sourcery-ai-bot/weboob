@@ -175,8 +175,7 @@ class AccountsList(LoggedPage, HTMLPage):
             return None
 
         span = Attr('//span[starts-with(@id, "index:j_id")]', 'id')(self.doc)
-        jid = span.split(':')[1]
-        return jid
+        return span.split(':')[1]
 
     def islast(self):
         havemore = self.doc.getroot().cssselect('.show-more-transactions')

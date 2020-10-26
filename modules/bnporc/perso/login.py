@@ -91,9 +91,10 @@ class LoginPage(Page):
         # Mechanize does not recognize the form..
         form = self.document.xpath('//form[@name="logincanalnet"]')[0]
         url = form.attrib['action']
-        params = {}
-        for ctrl in form.findall('input'):
-            params[ctrl.attrib['name']] = ctrl.attrib['value']
+        params = {
+            ctrl.attrib['name']: ctrl.attrib['value']
+            for ctrl in form.findall('input')
+        }
 
         params['ch1'] = login.encode('iso-8859-1')
         params['ch5'] = vk.get_string_code(password)

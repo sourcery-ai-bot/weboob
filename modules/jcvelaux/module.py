@@ -130,8 +130,7 @@ class jcvelauxModule(Module, CapGauge):
                 raise SensorNotFound()
 
         if pattern is None:
-            for sensor in gauge.sensors:
-                yield sensor
+            yield from gauge.sensors
         else:
             lowpattern = pattern.lower()
             for sensor in gauge.sensors:

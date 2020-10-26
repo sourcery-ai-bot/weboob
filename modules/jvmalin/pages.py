@@ -17,15 +17,12 @@ class RoadmapAmbiguity(RoadmapError):
 class RoadmapSearchPage(Page):
     def search(self, departure, arrival, departure_time, arrival_time):
         match = -1
-        i = 0
-        for form in self.browser.forms():
+        for i, form in enumerate(self.browser.forms()):
             try:
                 if form.attrs['id'] == 'rech-iti':
                     match = i
             except KeyError:
                 pass
-            i += 1
-
         self.browser.select_form(nr=match)
         self.browser['Departure'] = departure
         self.browser['Destination'] = arrival
@@ -62,8 +59,8 @@ class RoadmapResultsPage(Page):
         best = self.parser.select(self.document.getroot(), 'div.alerte-bloc-important div.bloc-iti')
         if len(best) == 0:
             best = self.parser.select(self.document.getroot(), 'div.bloc-iti')
-            if len(best) == 0:
-                raise RoadmapError('Unable to get the best roadmap')
+        if len(best) == 0:
+            raise RoadmapError('Unable to get the best roadmap')
 
         link = self.parser.select(best[0], 'a.btn-submit')
         if len(link) == 0:
@@ -89,8 +86,8 @@ class RoadmapResultsPage(Page):
         props = self.parser.select(ambi, 'span.precision-arret input')
         if len(props) == 0:
             props = self.parser.select(ambi, 'span.precision-adresse input')
-            if len(props) == 0:
-                raise RoadmapError('Nothing to select to get a roadmap')
+        if len(props) == 0:
+            raise RoadmapError('Nothing to select to get a roadmap')
 
         self.browser.select_form(nr=i)
         propname = props[0].attrib['name']

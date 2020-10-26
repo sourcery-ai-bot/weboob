@@ -114,9 +114,7 @@ class CaisseEpargne(Browser):
         while True:
             assert self.is_on_page(IndexPage)
 
-            for tr in self.page.get_history():
-                yield tr
-
+            yield from self.page.get_history()
             if not self.page.go_next():
                 return
 

@@ -122,8 +122,7 @@ class GroovesharkModule(Module, CapAudio, CapCollection):
                 if Playlist in objs:
                     self._restrict_level(split_path)
                 if self.browser.is_logged():
-                    for item in self.browser.get_all_user_playlists():
-                        yield item
+                    yield from self.browser.get_all_user_playlists()
 
     def validate_collection(self, objs, collection):
         if collection.path_level == 0:

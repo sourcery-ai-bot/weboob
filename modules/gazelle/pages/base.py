@@ -23,9 +23,10 @@ from weboob.deprecated.browser import BrowserUnavailable, Page as _BasePage
 
 class BasePage(_BasePage):
     def on_loaded(self):
-        errors = []
-        for div in self.parser.select(self.document.getroot(), 'div.poetry'):
-            errors.append(self.parser.tocleanstring(div))
+        errors = [
+            self.parser.tocleanstring(div)
+            for div in self.parser.select(self.document.getroot(), 'div.poetry')
+        ]
 
-        if len(errors) > 0:
+        if errors:
             raise BrowserUnavailable(', '.join(errors))

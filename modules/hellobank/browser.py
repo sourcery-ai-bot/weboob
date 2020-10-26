@@ -199,8 +199,7 @@ class HelloBank(Browser):
 
     def iter_threads(self):
         self.messages_page()
-        for thread in self.page.iter_threads():
-            yield thread
+        yield from self.page.iter_threads()
 
     def get_thread(self, thread):
         self.messages_page()

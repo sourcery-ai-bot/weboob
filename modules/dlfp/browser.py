@@ -116,11 +116,7 @@ class DLFP(Browser):
         if new is None:
             return None
 
-        if new:
-            title = name.replace('-', ' ')
-        else:
-            title = None
-
+        title = name.replace('-', ' ') if new else None
         self.page.post_content(title, content, message)
 
     def get_wiki_preview(self, name, content):
@@ -136,8 +132,7 @@ class DLFP(Browser):
     def get_hash(self, url):
         self.location(url)
         if self.page.document.xpath('//entry'):
-            myhash = hashlib.md5(lxml.etree.tostring(self.page.document)).hexdigest()
-            return myhash
+            return hashlib.md5(lxml.etree.tostring(self.page.document)).hexdigest()
         else:
             return None
 
@@ -237,10 +232,10 @@ class DLFP(Browser):
         if comment.relevance_token is None:
             return False
 
-        res = self.readurl('%s%s' % (comment.relevance_url, what),
-                           urllib.urlencode({'authenticity_token': comment.relevance_token}))
-
-        return res
+        return self.readurl(
+            '%s%s' % (comment.relevance_url, what),
+            urllib.urlencode({'authenticity_token': comment.relevance_token}),
+        )
 
     def iter_new_board_messages(self):
         self.location('/board/index.xml')

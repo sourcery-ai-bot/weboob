@@ -30,10 +30,7 @@ class StreamsPage(Page):
         radio.description = u'Nectarine Demoscene Radio'
         radio.streams = []
 
-        index = -1
-
-        for el in self.document.xpath('//stream'):
-            index += 1
+        for index, el in enumerate(self.document.xpath('//stream')):
             stream_url = unicode(el.findtext('url'))
             bitrate = el.findtext('bitrate')
             encode = unicode(el.findtext('type'))

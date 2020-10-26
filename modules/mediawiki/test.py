@@ -29,7 +29,7 @@ class MediawikiTest(BackendTest):
         self.backend.get_content(u"Utilisateur:Clemux/Test")
 
     def test_iter_revisions(self):
-        for rev in self.backend.iter_revisions(u"Utilisateur:Clemux/Test"):
+        for _ in self.backend.iter_revisions(u"Utilisateur:Clemux/Test"):
             pass
 
     def test_push_content(self):

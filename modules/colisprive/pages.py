@@ -51,11 +51,12 @@ class TrackPage(Page):
             ev.activity = self.parser.tocleanstring(tds[1])
             if u"Votre colis a été expédié par votre webmarchand" in ev.activity:
                 update_status(p, p.STATUS_PLANNED)
-            elif u"Votre colis est pris en charge par Colis Privé" in ev.activity:
-                update_status(p, p.STATUS_IN_TRANSIT)
-            elif u"Votre colis est arrivé sur notre agence régionale" in ev.activity:
-                update_status(p, p.STATUS_IN_TRANSIT)
-            elif u"Votre colis est en cours de livraison" in ev.activity:
+            elif (
+                u"Votre colis est pris en charge par Colis Privé" in ev.activity
+                or u"Votre colis est arrivé sur notre agence régionale"
+                in ev.activity
+                or u"Votre colis est en cours de livraison" in ev.activity
+            ):
                 update_status(p, p.STATUS_IN_TRANSIT)
             elif u"Votre colis a été livré" in ev.activity:
                 update_status(p, p.STATUS_ARRIVED)

@@ -60,7 +60,7 @@ class IndexPage(HTMLPage):
                 coef.gaugeid = gauge_id
 
                 coef.history = []
-                for jour in range(0, 7):
+                for jour in range(7):
                     measure = self._get_coef_value(AM=AM, jour=jour)
                     if measure:
                         coef.history.append(measure)
@@ -96,7 +96,7 @@ class IndexPage(HTMLPage):
                 tide.gaugeid = gauge_id
 
                 tide.history = []
-                for jour in range(0, 7):
+                for jour in range(7):
                     measure = self._get_high_tide_value(AM=AM, jour=jour)
                     if measure:
                         tide.history.append(measure)
@@ -134,7 +134,7 @@ class IndexPage(HTMLPage):
                 tide.gaugeid = gauge_id
 
                 tide.history = []
-                for jour in range(0, 7):
+                for jour in range(7):
                     measure = self._get_low_tide_value(AM=AM, jour=jour)
                     if measure:
                         tide.history.append(measure)

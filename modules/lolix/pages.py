@@ -73,19 +73,17 @@ class SearchPage(Page):
             cols = self.is_row_advert(row)
             if cols is not None:
                 advert = self.create_job_advert(cols)
-                if pattern:
-                    if pattern in advert.title:
-                        yield advert
-                else:
+                if pattern in advert.title or not pattern:
                     yield advert
 
     def is_row_advert(self, row):
         cols = self.parser.select(row, 'td')
         if len(cols) > 1:
             d = dict(cols[1].attrib)
-            if 'class' in d.keys():
-                if 'ListeDark' == d['class'] or 'ListeLight' == d['class']:
-                    return cols
+            if 'class' in d and (
+                'ListeDark' == d['class'] or 'ListeLight' == d['class']
+            ):
+                return cols
 
     def create_job_advert(self, cols):
         a = self.parser.select(cols[2], 'a')[0]

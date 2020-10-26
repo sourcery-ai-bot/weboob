@@ -103,10 +103,7 @@ class BNPVirtKeyboard(MappedVirtKeyboard):
         s = ''
         for y in range(y1, min(y2 + 1, self.height)):
             for x in range(x1, min(x2 + 1, self.width)):
-                if self.check_color(self.pixar[x, y]):
-                    s += " "
-                else:
-                    s += "O"
+                s += " " if self.check_color(self.pixar[x, y]) else "O"
             s += "\n"
         s = '\n'.join([l for l in s.splitlines() if l.strip()])
         return hashlib.md5(s).hexdigest()
@@ -169,10 +166,10 @@ class AccountsPage(BEPage):
 
 class HistoryPage(BEPage):
     def is_empty(self):
-        for td in self.parser.select(self.document.getroot(), 'td.V11vertGras'):
-            if u'Aucune opération enregistrée' in to_unicode(td.text_content()):
-                return True
-        return False
+        return any(
+            u'Aucune opération enregistrée' in to_unicode(td.text_content())
+            for td in self.parser.select(self.document.getroot(), 'td.V11vertGras')
+        )
 
     def find_table(self):
         for table in self.parser.select(self.document.getroot(), 'table', 'many'):
@@ -226,10 +223,7 @@ class HistoryPage(BEPage):
             tdcredit = self.parser.tocleanstring(tds[columns['credit']])
 
             if all((tddate, tdlabel, any((tddebit, tdcredit)))):
-                if tddebit:
-                    tdamount = '- %s' % tddebit
-                else:
-                    tdamount = tdcredit
+                tdamount = '- %s' % tddebit if tddebit else tdcredit
                 t = Transaction(i)
                 t.set_amount(tdamount)
                 t.parse(tddate, tdlabel, tdval)

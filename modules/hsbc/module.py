@@ -47,12 +47,10 @@ class HSBCModule(Module, CapBank):
                                    self.config['secret'].get())
 
     def iter_accounts(self):
-        for account in self.browser.get_accounts_list():
-            yield account
+        yield from self.browser.get_accounts_list()
 
     def get_account(self, _id):
         return find_object(self.browser.get_accounts_list(), id=_id, error=AccountNotFound)
 
     def iter_history(self, account):
-        for tr in self.browser.get_history(account):
-            yield tr
+        yield from self.browser.get_history(account)

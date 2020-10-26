@@ -107,8 +107,7 @@ class AccountHistory(Page):
 
 class CardsList(Page):
     def get_cards(self):
-        cards = []
-        for tr in self.document.xpath('//table[@class="dataNum"]/tbody/tr'):
-            cards.append(tr.xpath('.//a')[0].attrib['href'])
-
-        return cards
+        return [
+            tr.xpath('.//a')[0].attrib['href']
+            for tr in self.document.xpath('//table[@class="dataNum"]/tbody/tr')
+        ]

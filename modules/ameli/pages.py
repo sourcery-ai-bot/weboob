@@ -67,7 +67,7 @@ class AccountPage(AmeliBasePage):
             if len(lis) > 3:
                 number = re.sub('[^\d]+', '', ident.xpath('.//li')[3].text)
             else:
-                enfants = enfants + 1
+                enfants += 1
                 number = "AFFILIE" + str(enfants)
             sub = Subscription(number)
             sub._id = number
@@ -90,10 +90,7 @@ class LastPaymentsPage(AmeliBasePage):
 
 class PaymentDetailsPage(AmeliBasePage):
     def iter_payment_details(self, sub):
-        if sub._id.isdigit():
-            idx = 0
-        else:
-            idx = sub._id.replace('AFFILIE', '')
+        idx = 0 if sub._id.isdigit() else sub._id.replace('AFFILIE', '')
         if len(self.document.xpath('//div[@class="centrepage"]/h2')) > idx or self.document.xpath('//table[@id="DetailPaiement3"]') > idx:
             id_str = self.document.xpath('//div[@class="centrepage"]/h2')[idx].text.strip()
             m = re.match('.*le (.*) pour un montant de.*', id_str)
@@ -120,7 +117,7 @@ class PaymentDetailsPage(AmeliBasePage):
                         det.datetime = datetime.strptime(date_str, '%d/%m/%Y').date()
                         last_date = det.datetime
                     det.price = Decimal(re.sub('[^\d,-]+', '', tds[5].text).replace(',', '.'))
-                    line = line + 1
+                    line += 1
                     yield det
 
 

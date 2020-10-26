@@ -32,12 +32,14 @@ class DLFPTest(BackendTest):
         BackendTest.__init__(self, *args, **kwargs)
 
     def test_new_messages(self):
-        feeds = {}
-        for name, feed in self.backend.FEEDS.iteritems():
-            feeds[name] = feed.replace('//linuxfr.org', '//alpha.linuxfr.org')
+        feeds = {
+            name: feed.replace('//linuxfr.org', '//alpha.linuxfr.org')
+            for name, feed in self.backend.FEEDS.iteritems()
+        }
+
         self.backend.FEEDS = feeds
 
-        for message in self.backend.iter_unread_messages():
+        for _ in self.backend.iter_unread_messages():
             pass
 
     def test_get_content(self):

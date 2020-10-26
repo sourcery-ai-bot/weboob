@@ -135,9 +135,5 @@ class TransactionsPage(Page):
             t.raw = re.sub(r'[ ]+', ' ', raw)
             t.label = re.sub('(.*?)( \d+)?  .*', r'\1', raw).strip()
             t.set_amount(credit, debit)
-            if t.amount > 0:
-                t.type = t.TYPE_ORDER
-            else:
-                t.type = t.TYPE_CARD
-
+            t.type = t.TYPE_ORDER if t.amount > 0 else t.TYPE_CARD
             yield t

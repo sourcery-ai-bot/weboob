@@ -82,9 +82,7 @@ class Downloadboob(object):
         if os.path.islink(link_name):
             file_name = os.readlink(link_name)
             absolute_file_name = os.path.join(self.links_directory, file_name)
-            if os.path.isfile(absolute_file_name):
-                return True
-            return False
+            return bool(os.path.isfile(absolute_file_name))
         else:
             return True
 
@@ -120,10 +118,7 @@ class Downloadboob(object):
             self.do_download(video)
 
     def is_excluded(self, title, title_exclude):
-        for exclude in title_exclude:
-            if title.find(exclude) > -1:
-                return True
-        return False
+        return any(title.find(exclude) > -1 for exclude in title_exclude)
 
     def id_regexp_matched(self, video_id, id_regexp):
         if id_regexp:

@@ -58,8 +58,7 @@ class DresdenWetterModule(Module, CapGauge):
         if not isinstance(gauge, Gauge):
             gauge = find_object(self.iter_gauges(), id=gauge, error=SensorNotFound)
         if pattern is None:
-            for sensor in gauge.sensors:
-                yield sensor
+            yield from gauge.sensors
         else:
             lowpattern = pattern.lower()
             for sensor in gauge.sensors:

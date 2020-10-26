@@ -127,7 +127,7 @@ class CreditMutuelBrowser(LoginBrowser):
             args = dict(parse_qsl(v.query))
             # useful with 12 -> 1
             if int(args['mois']) < month:
-                month = month + 1
+                month += 1
             else:
                 month = int(args['mois'])
 

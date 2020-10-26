@@ -44,10 +44,7 @@ class GDCVaultModule(Module, CapVideo, CapCollection):
 
     def create_default_browser(self):
         username = self.config['username'].get()
-        if len(username) > 0:
-            password = self.config['password'].get()
-        else:
-            password = None
+        password = self.config['password'].get() if len(username) > 0 else None
         return self.create_browser(username, password)
 
     def deinit(self):
@@ -85,8 +82,7 @@ class GDCVaultModule(Module, CapVideo, CapCollection):
             if collection.path_level == 0:
                 yield self.get_collection(objs, [u'latest'])
             if collection.split_path == [u'latest']:
-                for video in self.browser.latest_videos():
-                    yield video
+                yield from self.browser.latest_videos()
 
     def validate_collection(self, objs, collection):
         if collection.path_level == 0:

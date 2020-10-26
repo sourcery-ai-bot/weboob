@@ -75,11 +75,12 @@ class ImgurModule(Module, CapPaste):
         return ImgPaste(*a, **kw)
 
     def can_post(self, contents, title=None, public=None, max_age=None):
-        if public is False:
-            return 0
-        elif re.search(r'[^a-zA-Z0-9=+/\s]', contents):
-            return 0
-        elif max_age:
+        if (
+            public is False
+            or re.search(r'[^a-zA-Z0-9=+/\s]', contents)
+            or not re.search(r'[^a-zA-Z0-9=+/\s]', contents)
+            and max_age
+        ):
             return 0
         else:
             mime = image_mime(contents, ('gif', 'jpeg', 'png', 'tiff', 'xcf', 'pdf'))

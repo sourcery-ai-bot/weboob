@@ -62,7 +62,7 @@ class LogicimmoModule(Module, CapHousing):
         cities_names = ['%s' % c.name.replace(' ', '-') for c in query.cities if c.backend == self.name]
         cities_ids = ['%s' % c.id for c in query.cities if c.backend == self.name]
 
-        if len(cities_names) == 0:
+        if not cities_names:
             return list()
 
         if len(cities_names) > 3:

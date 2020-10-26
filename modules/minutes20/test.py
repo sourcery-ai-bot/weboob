@@ -25,5 +25,5 @@ class Minutes20Test(BackendTest):
     MODULE = 'minutes20'
 
     def test_new_messages(self):
-        for message in self.backend.iter_unread_messages():
+        for _ in self.backend.iter_unread_messages():
             pass

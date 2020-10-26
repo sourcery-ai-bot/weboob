@@ -144,10 +144,11 @@ class BoobankMuninPlugin(object):
         try:
             accounts = []
             if self.monitored_accounts is not None:
-                d = {}
-                for account in self.weboob.do('iter_accounts'):
-                    if self.monitored(account):
-                        d['%s@%s' % (account.id, account.backend)] = account
+                d = {
+                    '%s@%s' % (account.id, account.backend): account
+                    for account in self.weboob.do('iter_accounts')
+                    if self.monitored(account)
+                }
 
                 for id in self.monitored_accounts:
                     try:

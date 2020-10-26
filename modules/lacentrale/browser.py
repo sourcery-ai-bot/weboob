@@ -68,9 +68,7 @@ class LaCentraleBrowser(Browser):
         numpage = 1
         while True:
             # parse the current page
-            for price in self.page.iter_prices(product, numpage):
-                yield price
-
+            yield from self.page.iter_prices(product, numpage)
             # check if next page
             numpage = self.page.get_next()
             if not numpage:

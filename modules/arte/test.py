@@ -54,7 +54,7 @@ class ArteTest(BackendTest):
         # some categories may contain no available videos (during summer period for example)
         for l in l1:
             l2 = list(self.backend.iter_resources([BaseVideo], l.split_path))
-            if len(l2) == 0:
+            if not l2:
                 continue
 
             break

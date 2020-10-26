@@ -30,8 +30,7 @@ from weboob.capabilities.base import NotAvailable
 
 class DictElement(ListElement):
     def find_elements(self):
-        for el in self.el:
-            yield el
+        yield from self.el
 
 
 class CitiesPage(JsonPage):
@@ -69,10 +68,10 @@ class HousingPage(HTMLPage):
         obj_url = BrowserURL('housing', _id=Env('_id'))
 
         def obj_photos(self):
-            photos = []
-            for img in XPath('//div[@class="carousel"]/ul/li/a/img/@src')(self):
-                photos.append(HousingPhoto(u'%s' % img))
-            return photos
+            return [
+                HousingPhoto(u'%s' % img)
+                for img in XPath('//div[@class="carousel"]/ul/li/a/img/@src')(self)
+            ]
 
         def obj_details(self):
             details = {}
@@ -91,8 +90,7 @@ class HousingPage(HTMLPage):
     def get_phone_url_datas(self):
         a = XPath('//a[has-class("phone-link")]')(self.doc)[0]
         urlcontact = CleanText('./@data-urlcontact')(a)
-        params = {}
-        params['univers'] = CleanText('./@data-univers')(a)
+        params = {'univers': CleanText('./@data-univers')(a)}
         params['pushcontact'] = CleanText('./@data-pushcontact')(a)
         params['mapper'] = CleanText('./@data-mapper')(a)
         params['offerid'] = CleanText('./@data-offerid')(a)

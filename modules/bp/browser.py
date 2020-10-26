@@ -111,11 +111,8 @@ class BPBrowser(Browser):
         self.location(self.buildurl(v.path, **args))
 
         if self.is_on_page(AccountHistory):
-            for tr in self.page.get_history():
-                yield tr
-
-        for tr in self.get_coming(account):
-            yield tr
+            yield from self.page.get_history()
+        yield from self.get_coming(account)
 
     def get_coming(self, account):
         for card in account._card_links:
@@ -125,11 +122,9 @@ class BPBrowser(Browser):
                 for link in self.page.get_cards():
                     self.location(link)
 
-                    for tr in self._iter_card_tr():
-                        yield tr
+                    yield from self._iter_card_tr()
             else:
-                for tr in self._iter_card_tr():
-                    yield tr
+                yield from self._iter_card_tr()
 
     def _iter_card_tr(self):
         """
@@ -138,9 +133,7 @@ class BPBrowser(Browser):
         ops = self.page.get_history(deferred=True)
 
         while True:
-            for tr in ops:
-                yield tr
-
+            yield from ops
             link = self.page.get_next_link()
             if link is None:
                 return

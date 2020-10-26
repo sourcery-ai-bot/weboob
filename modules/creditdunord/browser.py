@@ -110,20 +110,14 @@ class CreditDuNordBrowser(Browser):
 
             self.page.is_coming = is_coming
 
-            for tr in self.page.get_history():
-                yield tr
-
+            yield from self.page.get_history()
             is_coming = self.page.is_coming
             args = self.page.get_next_args(args)
 
     def get_history(self, account):
-        for tr in self.iter_transactions(account._link, account._args):
-            yield tr
-
-        for tr in self.get_card_operations(account):
-            yield tr
+        yield from self.iter_transactions(account._link, account._args)
+        yield from self.get_card_operations(account)
 
     def get_card_operations(self, account):
         for link_args in account._card_ids:
-            for tr in self.iter_transactions(account._link, link_args, True):
-                yield tr
+            yield from self.iter_transactions(account._link, link_args, True)

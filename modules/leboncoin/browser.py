@@ -70,15 +70,8 @@ class LeboncoinBrowser(PagesBrowser):
         return self.housing.go(_id=_id).get_housing(obj=obj)
 
     def decode_query(self, query):
-        cities = []
-        for c in query.cities:
-            cities.append(c.name)
-
-        ret = []
-        for g in query.house_types:
-            if g in self.RET:
-                ret.append(self.RET.get(g))
-
+        cities = [c.name for c in query.cities]
+        ret = [self.RET.get(g) for g in query.house_types if g in self.RET]
         _type = 'ventes_immobilieres'
         if query.type == Query.TYPE_RENT:
             _type = 'locations'

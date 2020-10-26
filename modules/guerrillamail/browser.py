@@ -42,8 +42,7 @@ class GuerrillamailBrowser(Browser):
         return self.get_document(self.openurl(url, *a)).decode(self.ENCODING, 'replace')
 
     def _get_json(self, url, *a):
-        j = json.loads(self._get_unicode(url, *a))
-        return j
+        return json.loads(self._get_unicode(url, *a))
 
     def get_mails(self, boxid):
         params = {'email_user': boxid, 'lang': 'en', 'domain': 'guerrillamail.com'}

@@ -31,8 +31,7 @@ from weboob.browser.filters.html import CleanHTML
 class DictElement(ListElement):
     def find_elements(self):
         if self.item_xpath is not None:
-            for el in self.el.get(self.item_xpath):
-                yield el
+            yield from self.el.get(self.item_xpath)
         else:
             yield self.el
 

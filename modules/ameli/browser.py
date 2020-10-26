@@ -95,8 +95,7 @@ class AmeliBrowser(Browser):
         for url in urls:
             self.location(url)
             assert self.is_on_page(PaymentDetailsPage)
-            for payment in self.page.iter_payment_details(sub):
-                yield payment
+            yield from self.page.iter_payment_details(sub)
 
     def iter_details(self, sub):
         det = Detail()

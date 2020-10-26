@@ -269,7 +269,7 @@ class AudioAddictModule(Module, CapRadio, CapCollection):
                          (self.NETWORKS[network]['domain'], name, radioName)
 
             radio.streams.append(stream)
-            i = i + 1
+            i += 1
         return radio
 
     def fill_radio(self, radio, fields):

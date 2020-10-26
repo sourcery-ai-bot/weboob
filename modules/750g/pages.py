@@ -77,10 +77,12 @@ class RecipePage(HTMLPage):
         obj_title = CleanText('//h1[@class="fn"]')
 
         def obj_ingredients(self):
-            ingredients = []
-            for el in self.page.doc.xpath('//section[has-class("recette_ingredients")]/ul/li'):
-                ingredients.append(CleanText('.')(el))
-            return ingredients
+            return [
+                CleanText('.')(el)
+                for el in self.page.doc.xpath(
+                    '//section[has-class("recette_ingredients")]/ul/li'
+                )
+            ]
 
         obj_cooking_time = Time(CleanText('//span[@class="cooktime"]'))
         obj_preparation_time = Time(CleanText('//span[@class="preptime"]'))

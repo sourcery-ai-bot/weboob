@@ -105,11 +105,8 @@ class Barclays(Browser):
 
         assert self.is_on_page((TransactionsPage, ValuationPage, LoanPage, MarketPage, AssurancePage))
 
-        for tr in self.page.get_history():
-            yield tr
-
-        for tr in self.get_card_operations(account):
-            yield tr
+        yield from self.page.get_history()
+        yield from self.get_card_operations(account)
 
     def get_card_operations(self, account):
         for card in account._card_links:
@@ -120,5 +117,4 @@ class Barclays(Browser):
 
             assert self.is_on_page(CardPage)
 
-            for tr in self.page.get_history():
-                yield tr
+            yield from self.page.get_history()

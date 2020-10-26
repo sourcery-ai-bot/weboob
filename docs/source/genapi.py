@@ -43,10 +43,7 @@ def genapi():
             subs.add('%s/index' % d)
 
         with open(os.path.join(root, 'index.rst'), 'w') as fp:
-            if module == 'weboob':
-                m = 'API'
-            else:
-                m = ':mod:`%s`' % module
+            m = 'API' if module == 'weboob' else ':mod:`%s`' % module
             fp.write("""%s
 %s
 

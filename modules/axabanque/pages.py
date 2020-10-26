@@ -278,7 +278,7 @@ class CBTransactionsPage(TransactionsPage):
 
     def get_history(self):
         tables = self.document.xpath('//table[@id="idDetail:dataCumulAchat"]')
-        transactions =list()
+        transactions = []
 
         if len(tables) == 0:
             return transactions

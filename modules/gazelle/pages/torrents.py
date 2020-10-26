@@ -120,10 +120,7 @@ class TorrentsPage(BasePage):
             title = self.browser.parser.select(table, 'div.title_text', 1).text
 
         torrent = Torrent(id, title)
-        if '.' in id:
-            torrentid = id.split('.', 1)[1]
-        else:
-            torrentid = id
+        torrentid = id.split('.', 1)[1] if '.' in id else id
         table = self.browser.parser.select(self.document.getroot(), 'table.torrent_table')
         if len(table) == 0:
             table = self.browser.parser.select(self.document.getroot(), 'div.main_column', 1)
@@ -136,7 +133,7 @@ class TorrentsPage(BasePage):
             if is_table and 'group_torrent' in tr.attrib.get('class', ''):
                 tds = tr.findall('td')
 
-                if not len(tds) == 5:
+                if len(tds) != 5:
                     continue
 
                 url = tds[0].find('span').find('a').attrib['href']

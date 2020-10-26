@@ -47,10 +47,7 @@ class EHentaiModule(Module, CapGallery, CapCollection):
 
     def create_default_browser(self):
         username = self.config['username'].get()
-        if username:
-            password = self.config['password'].get()
-        else:
-            password = None
+        password = self.config['password'].get() if username else None
         return self.create_browser(self.config['domain'].get(), username, password)
 
     def search_galleries(self, pattern, sortby=None):
@@ -76,8 +73,8 @@ class EHentaiModule(Module, CapGallery, CapCollection):
             else:
                 return None
 
-        gallery = EHentaiGallery(_id)
         with self.browser:
+            gallery = EHentaiGallery(_id)
             if self.browser.gallery_exists(gallery):
                 return gallery
             else:
@@ -101,8 +98,7 @@ class EHentaiModule(Module, CapGallery, CapCollection):
             if collection.path_level == 0:
                 yield self.get_collection(objs, [u'latest_nsfw'])
             if collection.split_path == [u'latest_nsfw']:
-                for gallery in self.browser.latest_gallery():
-                    yield gallery
+                yield from self.browser.latest_gallery()
 
     def validate_collection(self, objs, collection):
         if collection.path_level == 0:

@@ -125,19 +125,17 @@ class ArteModule(Module, CapVideo, CapCollection):
                     yield Collection([u'arte-program'], u'Arte Programs')
                 if collection.path_level == 1:
                     if collection.split_path == [u'arte-latest']:
-                        for video in self.browser.latest_videos():
-                            yield video
+                        yield from self.browser.latest_videos()
                     if collection.split_path == [u'arte-live']:
-                        for categorie in self.browser.get_arte_live_categories():
-                            yield categorie
+                        yield from self.browser.get_arte_live_categories()
                     if collection.split_path == [u'arte-program']:
                         for item in self.browser.get_arte_programs():
                             lang = self.TRANSLATION[self.config['lang'].get()]
 
-                            if lang == 'F':
-                                title = 'titleFR'
-                            elif lang == 'D':
+                            if lang == 'D':
                                 title = 'titleDE'
+                            elif lang == 'F':
+                                title = 'titleFR'
                             else:
                                 title = 'name'
 
@@ -148,21 +146,24 @@ class ArteModule(Module, CapVideo, CapCollection):
                             yield Collection([u'arte-program', item['clusterId']], u'%s' % name)
                 if collection.path_level == 2:
                     if collection.split_path[0] == u'arte-live':
-                        for video in self.browser.live_videos(collection.basename):
-                            yield video
+                        yield from self.browser.live_videos(collection.basename)
                     if collection.split_path[0] == u'arte-program':
-                        for video in self.browser.program_videos(collection.split_path[1]):
-                            yield video
+                        yield from self.browser.program_videos(collection.split_path[1])
 
     def validate_collection(self, objs, collection):
         if collection.path_level == 0:
             return
-        if BaseVideo in objs and (collection.split_path == [u'arte-latest'] or
-                                  collection.split_path == [u'arte-live'] or
-                                  collection.split_path == [u'arte-program']):
+        if BaseVideo in objs and collection.split_path in [
+            [u'arte-latest'],
+            [u'arte-live'],
+            [u'arte-program'],
+        ]:
             return
-        if BaseVideo in objs and collection.path_level == 2 and (collection.split_path[0] == u'arte-live' or
-                                                                 collection.split_path[0] == u'arte-program'):
+        if (
+            BaseVideo in objs
+            and collection.path_level == 2
+            and collection.split_path[0] in [u'arte-live', u'arte-program']
+        ):
             return
         raise CollectionNotFound(collection.split_path)
 

@@ -61,11 +61,7 @@ class VirtKeyboard(MappedVirtKeyboard):
         self.check_symbols(self.symbols, page.browser.responses_dirname)
 
     def check_color(self, pixel):
-        for p in pixel:
-            if p >= 0xd5:
-                return False
-
-        return True
+        return all(p < 0xd5 for p in pixel)
 
     def get_symbol_coords(self, coords):
         # strip borders

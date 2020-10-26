@@ -38,9 +38,7 @@ class HDSBrowser(PagesBrowser):
         n = 1
         self.history.go(pagenum=n)
         while self.page.get_numerous() == n:
-            for story in self.page.iter_stories():
-                yield story
-
+            yield from self.page.iter_stories()
             n += 1
             self.history.go(pagenum=n)
 

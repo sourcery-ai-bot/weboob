@@ -67,8 +67,6 @@ class AmazonStoreCard(LoginBrowser):
 
     @need_login
     def iter_history(self, account):
-        for t in self.recent.go(data=RecentPage.DATA).iter_transactions():
-            yield t
+        yield from self.recent.go(data=RecentPage.DATA).iter_transactions()
         for s in self.stmts.go(data=StatementsPage.DATA).iter_statements():
-            for t in s.iter_transactions():
-                yield t
+            yield from s.iter_transactions()

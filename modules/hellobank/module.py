@@ -58,8 +58,7 @@ class HelloBankModule(Module, CapBank, CapMessages):
                                    self.config['password'].get())
 
     def iter_accounts(self):
-        for account in self.browser.get_accounts_list():
-            yield account
+        yield from self.browser.get_accounts_list()
 
     def get_account(self, _id):
         if not _id.isdigit():

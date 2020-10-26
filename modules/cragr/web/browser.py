@@ -174,8 +174,7 @@ class Cragr(Browser):
         self.location(account._link)
 
         if self.is_on_page(CardsPage):
-            for tr in self.page.get_history(date_guesser):
-                yield tr
+            yield from self.page.get_history(date_guesser)
         else:
             url = self.page.get_order_by_date_url()
 
@@ -183,7 +182,5 @@ class Cragr(Browser):
                 self.location(url)
                 assert self.is_on_page(TransactionsPage)
 
-                for tr in self.page.get_history(date_guesser):
-                    yield tr
-
+                yield from self.page.get_history(date_guesser)
                 url = self.page.get_next_url()

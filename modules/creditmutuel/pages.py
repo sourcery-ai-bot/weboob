@@ -94,8 +94,10 @@ class AccountsPage(LoggedPage, HTMLPage):
                     return False
 
                 first_td = self.el.xpath('./td')[0]
-                return ((first_td.attrib.get('class', '') == 'i g' or first_td.attrib.get('class', '') == 'p g')
-                        and first_td.find('a') is not None)
+                return (
+                    first_td.attrib.get('class', '') in ['i g', 'p g']
+                    and first_td.find('a') is not None
+                )
 
             class Label(Filter):
                 def filter(self, text):
@@ -256,8 +258,7 @@ class CardPage(OperationsPage, LoggedPage):
                     history_url = '%s/%s/fr/banque/%s' % (self.page.browser.BASEURL, self.page.browser.currentSubBank, card_link)
                     page = self.page.browser.location(history_url).page
 
-                    for op in page.get_history():
-                        yield op
+                    yield from page.get_history()
 
         class list_history(Transaction.TransactionsElement):
             head_xpath = '//table[@class="liste"]//thead/tr/th'

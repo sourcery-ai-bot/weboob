@@ -33,7 +33,7 @@ class ChannelsPage(Page):
         """
         Extract all possible channels (paths) from the page
         """
-        channels = list()
+        channels = []
         for elem in self.document[2].getchildren():
             for e in elem.getchildren():
                 if e.tag == "NOM":

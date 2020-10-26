@@ -45,7 +45,7 @@ class ArteLiveVideoPage(Page):
 
 class ArteLivePage(Page):
     def iter_resources(self):
-        items = list()
+        items = []
         for el in self.document.xpath('//ul[@class="filter-liste"]/li'):
             _id = el.attrib['data-target'].replace('video_box_tab_', '')
             text = self.parser.select(el, 'a/span', 1, method='xpath').text
@@ -55,7 +55,7 @@ class ArteLivePage(Page):
 
     def iter_videos(self, cat, lang='fr'):
         articles = self.document.xpath('//div[@id="video_box_tab_%s"]/article' % cat)
-        videos = list()
+        videos = []
         for article in articles:
             _id = article.attrib['about']
             title = self.parser.select(article,

@@ -47,8 +47,7 @@ class GdfSuezModule(Module, CapBill):
                                    self.config['password'].get())
 
     def iter_subscription(self):
-        for subscription in self.browser.get_subscription_list():
-            yield subscription
+        yield from self.browser.get_subscription_list()
 
     def get_subscription(self, _id):
         if not _id.isdigit():
@@ -64,22 +63,19 @@ class GdfSuezModule(Module, CapBill):
         if not isinstance(subscription, Subscription):
             subscription = self.get_subscription(subscription)
         with self.browser:
-            for history in self.browser.get_history(subscription):
-                yield history
+            yield from self.browser.get_history(subscription)
 
     def get_details(self, subscription):
         if not isinstance(subscription, Subscription):
             subscription = self.get_subscription(subscription)
         with self.browser:
-            for detail in self.browser.get_details(subscription):
-                yield detail
+            yield from self.browser.get_details(subscription)
 
     def iter_bills(self, subscription):
         if not isinstance(subscription, Subscription):
             subscription = self.get_subscription(subscription)
         with self.browser:
-            for bill in self.browser.iter_bills():
-                yield bill
+            yield from self.browser.iter_bills()
 
     def get_bill(self, id):
         with self.browser:

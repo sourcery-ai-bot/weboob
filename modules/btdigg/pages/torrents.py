@@ -72,10 +72,7 @@ class TorrentPage(Page):
         delta = timedelta(**{valueunit: float(valueago)})
         date = datetime.now() - delta
 
-        files = []
-        for tr in trs[15:]:
-            files.append(unicode(tr.cssselect('td')[1].text))
-
+        files = [unicode(tr.cssselect('td')[1].text) for tr in trs[15:]]
         torrent = Torrent(ih, name)
         torrent.url = unicode(self.url)
         torrent.size = get_bytes_size(float(value), unit)

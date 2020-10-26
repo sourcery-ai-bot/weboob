@@ -62,7 +62,7 @@ def genico(data, size=16, bpp=24):
     vcnt = 0
     #remember that bitmap format is reversed in y-axis
     for x in range(size-1,-1,-1):
-        for y in range(0, size):
+        for y in range(size):
             b,g,r,t_or_a = data[y*size+x]
             a.extend((r,g,b))
             if bpp == 32:
@@ -91,24 +91,22 @@ def gencur(data, size=16, bpp=24, x=0, y=0):
 
 #C:\Python27\Lib\site-packages\weboob-0.g-py2.7.egg\share\icons\hicolor\64x64\apps
 
-if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        png_file = sys.argv[1]
+if __name__ == "__main__" and len(sys.argv) == 2:
+    png_file = sys.argv[1]
 
-        f, e = os.path.splitext(png_file)
-        ico_file = f + ".ico"
+    f, e = os.path.splitext(png_file)
+    ico_file = f + ".ico"
 
-        im = Image.open(r"%s" % png_file)
-        wh = 64
+    im = Image.open(r"%s" % png_file)
+    wh = 64
 
-        rgba = im.convert("RGBA")
+    rgba = im.convert("RGBA")
 
-        data = []
-        for i in range(wh):
-            for j in range(wh):
-                data.append(rgba.getpixel((i,j)))
+    data = []
+    for i in range(wh):
+        for j in range(wh):
+            data.append(rgba.getpixel((i,j)))
 
-        icoflow = genico(data, wh, 32)
-        _file = open(ico_file, "wb")
+    icoflow = genico(data, wh, 32)
+    with open(ico_file, "wb") as _file:
         icoflow.tofile(_file)
-        _file.close()

@@ -98,19 +98,10 @@ class ProgramPage(HTMLPage):
                 if city and city != '' and city.upper() != event.city.upper():
                     return False
 
-                if categories and len(categories) > 0 and event.category not in categories:
-                    return False
-
-                return True
+                return not categories or len(categories) <= 0 or event.category in categories
 
             def is_event_in_valid_period(self, event_date, date_from, date_to):
-                if event_date >= date_from:
-                    if not date_to:
-                        return True
-                    else:
-                        if event_date <= date_to:
-                            return True
-                return False
+                return event_date >= date_from and (event_date <= date_to or not date_to)
 
             obj_id = Regexp(Link('./div/a'), '/(.*?).html')
             obj_start_date = CombineDate(BiplanDate('div/div/b'), StartTime('div/div/b'))

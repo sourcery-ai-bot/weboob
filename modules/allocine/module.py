@@ -144,27 +144,25 @@ class AllocineModule(Module, CapCinema, CapVideo, CapCalendarEvent, CapCollectio
                     yield Collection([u'nowshowing'], u'Films au cinéma')
                     yield Collection([u'acshow'], u'Émissions')
                     yield Collection([u'interview'], u'Interviews')
-                if collection.path_level == 1:
-                    if collection.basename == u'acshow':
+                if collection.basename == u'acshow':
+                    if collection.path_level == 1:
                         emissions = self.browser.get_emissions(collection.basename)
                         if emissions:
-                            for emission in emissions:
-                                yield emission
-                    elif collection.basename == u'interview':
+                            yield from emissions
+                elif collection.basename == u'interview':
+                    if collection.path_level == 1:
                         videos = self.browser.get_categories_videos(collection.basename)
                         if videos:
-                            for video in videos:
-                                yield video
-                    else:
+                            yield from videos
+                else:
+                    if collection.path_level == 1:
                         videos = self.browser.get_categories_movies(collection.basename)
                         if videos:
-                            for video in videos:
-                                yield video
+                            yield from videos
                 if collection.path_level == 2:
                     videos = self.browser.get_categories_videos(':'.join(collection.split_path))
                     if videos:
-                        for video in videos:
-                            yield video
+                        yield from videos
 
     def validate_collection(self, objs, collection):
         if collection.path_level == 0:

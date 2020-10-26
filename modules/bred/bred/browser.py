@@ -76,7 +76,7 @@ class BredBrowser(DomainBrowser):
                     a.currency = poste['montantTitres']['monnaie']['code']
                     yield a
 
-                if not 'libelle' in poste:
+                if 'libelle' not in poste:
                     continue
 
                 a.label = ' '.join([content['intitule'].strip(), poste['libelle'].strip()])
@@ -102,8 +102,8 @@ class BredBrowser(DomainBrowser):
                           })
             next_page = False
             offset += 50
+            next_page = True
             for op in r.json()['content']['operations']:
-                next_page = True
                 t = Transaction()
                 t.id = op['id']
                 t.amount = Decimal(str(op['montant']))

@@ -52,7 +52,7 @@ class ExplorimmoModule(Module, CapHousing):
 
     def search_housings(self, query):
         cities = ['%s' % c.id for c in query.cities if c.backend == self.name]
-        if len(cities) == 0:
+        if not cities:
             return list()
 
         return self.browser.search_housings(query.type, cities, query.nb_rooms,

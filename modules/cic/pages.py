@@ -83,8 +83,10 @@ class AccountsPage(Page):
 
         for tr in self.document.getiterator('tr'):
             first_td = tr.getchildren()[0]
-            if (first_td.attrib.get('class', '') == 'i g' or first_td.attrib.get('class', '') == 'p g') \
-               and first_td.find('a') is not None:
+            if (
+                first_td.attrib.get('class', '') in ['i g', 'p g']
+                and first_td.find('a') is not None
+            ):
 
                 a = first_td.find('a')
                 link = a.get('href', '')
@@ -276,7 +278,7 @@ class CardPage(OperationsPage):
             page = self.browser.get_document(self.browser.openurl(history_url))
             pages.append(page)
 
-        if len(pages) == 0:
+        if not pages:
             # If not, add this page as transactions list
             pages.append(self.document)
 

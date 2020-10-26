@@ -46,9 +46,7 @@ class GdfSuez(Browser):
         self.location(self.homep)
 
     def is_logged(self):
-        if self.is_on_page(LoginPage) or self.is_on_page(TimeoutPage):
-            return False
-        return True
+        return not self.is_on_page(LoginPage) and not self.is_on_page(TimeoutPage)
 
     def login(self):
         assert isinstance(self.username, basestring)
@@ -84,8 +82,7 @@ class GdfSuez(Browser):
         url = 'https://www.gdfsuez-dolcevita.fr/' + self.get_bill(id)._url
         response = self.openurl(url)
         pdf = PdfPage(StringIO.StringIO(response.read()))
-        for detail in pdf.get_details(subscription.label):
-            yield detail
+        yield from pdf.get_details(subscription.label)
 
     def iter_bills(self):
         if not self.is_on_page(HistoryPage):

@@ -49,8 +49,7 @@ class NettoKomModule(Module, CapBill):
                                    self.config['password'].get())
 
     def iter_subscription(self):
-        for subscription in self.browser.get_subscription_list():
-            yield subscription
+        yield from self.browser.get_subscription_list()
 
     def get_subscription(self, _id):
         with self.browser:
@@ -62,14 +61,12 @@ class NettoKomModule(Module, CapBill):
 
     def iter_bills_history(self, subscription):
         with self.browser:
-            for history in self.browser.get_history():
-                yield history
+            yield from self.browser.get_history()
 
     # The subscription is actually useless, but maybe for the futur...
     def get_details(self, subscription):
         with self.browser:
-            for detail in self.browser.get_details():
-                yield detail
+            yield from self.browser.get_details()
 
     def get_balance(self, subscription):
         if not isinstance(subscription, Subscription):

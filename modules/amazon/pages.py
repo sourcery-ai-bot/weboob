@@ -118,8 +118,7 @@ class OrderNewPage(OrderPage):
             yield pmt
         transactions = list(self.transactions())
         if transactions:
-            for t in transactions:
-                yield t
+            yield from transactions
         else:
             for method in self.paymethods():
                 pmt = Payment()
@@ -255,8 +254,7 @@ class OrderOldPage(OrderPage):
                 yield pmt
         transactions = list(self.transactions())
         if transactions:
-            for t in transactions:
-                yield t
+            yield from transactions
         else:
             for method in self.paymethods():
                 pmt = Payment()
@@ -268,8 +266,7 @@ class OrderOldPage(OrderPage):
 
     def shipments(self):
         for cue in (u'Shipment #', u'Subscribe and Save Shipment'):
-            for shmt in self.doc.xpath('//b[contains(text(),"%s")]' % cue):
-                yield shmt
+            yield from self.doc.xpath('//b[contains(text(),"%s")]' % cue)
 
     def items(self):
         for shmt in self.shipments():

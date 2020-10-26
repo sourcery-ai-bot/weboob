@@ -82,9 +82,7 @@ class CreditCooperatif(Browser):
         while True:
             assert self.is_on_page(ITransactionsPage)
 
-            for tr in self.page.get_history():
-                yield tr
-
+            yield from self.page.get_history()
             next_url = self.page.get_next_url()
             if next_url is None:
                 return
@@ -96,8 +94,13 @@ class CreditCooperatif(Browser):
 
     def get_coming(self, account):
         # credit cards transactions
-        for tr in self._get_history('/banque/cpt/cpt/situationcomptes.do?lnkOpCB=X&numeroExterne='+ account.id):
-            yield tr
+        yield from self._get_history(
+            '/banque/cpt/cpt/situationcomptes.do?lnkOpCB=X&numeroExterne='
+            + account.id
+        )
+
         # coming transactions
-        for tr in self._get_history('/banque/cpt/cpt/situationcomptes.do?lnkOpEC=X&numeroExterne='+ account.id):
-            yield tr
+        yield from self._get_history(
+            '/banque/cpt/cpt/situationcomptes.do?lnkOpEC=X&numeroExterne='
+            + account.id
+        )

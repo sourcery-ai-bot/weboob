@@ -33,8 +33,7 @@ class SearchPage(Page):
             self.browser.location(url)
             assert self.browser.is_on_page(SubtitlesPage)
             # subtitles page does the job
-            for subtitle in self.browser.page.iter_subtitles(language, pattern):
-                yield subtitle
+            yield from self.browser.page.iter_subtitles(language, pattern)
 
 
 class SubtitlesPage(Page):
@@ -72,8 +71,8 @@ class SubtitlesPage(Page):
         tab = self.parser.select(self.document.getroot(), 'table[bordercolor="#B8C0B2"]')
         if len(tab) == 0:
             tab = self.parser.select(self.document.getroot(), 'table[bordercolordark="#B8C0B2"]')
-            if len(tab) == 0:
-                return
+        if len(tab) == 0:
+            return
         # some results of freefind point on useless pages
         if tab[0].attrib.get('width', '') != '100%':
             return

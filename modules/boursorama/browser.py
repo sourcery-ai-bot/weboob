@@ -138,9 +138,7 @@ class Boursorama(Browser):
             if not self.is_on_page(AccountHistory) and not self.is_on_page(CardHistory):
                 raise NotImplementedError()
 
-            for tr in self.page.get_operations():
-                yield tr
-
+            yield from self.page.get_operations()
             link = self.page.get_next_url()
 
     def get_investment(self, account):

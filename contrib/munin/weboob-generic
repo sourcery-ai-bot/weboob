@@ -257,8 +257,7 @@ class GenericMuninPlugin(object):
 
     def result2weboobid(self, result):
         attribs = self.attribid.split('/')
-        id = '%s@%s' % (getattr(result, attribs[0]), result.backend)
-        return id
+        return '%s@%s' % (getattr(result, attribs[0]), result.backend)
 
     def result2id(self, result):
         attribs = self.attribid.split('/')
@@ -283,10 +282,11 @@ class GenericMuninPlugin(object):
         try:
             objects = []
             if self.tomonitore or self.exclude:
-                d = {}
-                for result in self.build_do():
-                    if self.monitored(result):
-                        d[self.result2weboobid(result)] = result
+                d = {
+                    self.result2weboobid(result): result
+                    for result in self.build_do()
+                    if self.monitored(result)
+                }
 
                 if self.tomonitore:
                     for id in self.tomonitore:
@@ -295,8 +295,8 @@ class GenericMuninPlugin(object):
                         except KeyError:
                             pass
                 else:
-                    for id in d:
-                        objects.append(d[id])
+                    for id, value in d.items():
+                        objects.append(value)
             else:
                 objects = reversed([a for b, a in self.build_do()])
 

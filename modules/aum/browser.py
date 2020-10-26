@@ -250,9 +250,12 @@ class AuMBrowser(Browser):
         return r
 
     def get_exception(self, e):
-        if isinstance(e, urllib2.HTTPError) and hasattr(e, 'getcode'):
-            if e.getcode() in (410,):
-                return BrowserHTTPNotFound
+        if (
+            isinstance(e, urllib2.HTTPError)
+            and hasattr(e, 'getcode')
+            and e.getcode() in (410,)
+        ):
+            return BrowserHTTPNotFound
 
         return Browser.get_exception(self, e)
 
@@ -327,8 +330,7 @@ class AuMBrowser(Browser):
 
     @url2id
     def get_thread_mails(self, id, count=30):
-        r = self.api_request('threads/%s' % id, count=count, offset=0)
-        return r
+        return self.api_request('threads/%s' % id, count=count, offset=0)
 
     @url2id
     def post_mail(self, id, content):

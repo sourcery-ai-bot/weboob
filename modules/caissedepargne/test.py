@@ -26,6 +26,6 @@ class CaisseEpargneTest(BackendTest):
 
     def test_caisse_epargne(self):
         l = list(self.backend.iter_accounts())
-        if len(l) > 0:
+        if l:
             a = l[0]
             list(self.backend.iter_history(a))

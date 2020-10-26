@@ -29,8 +29,14 @@ class MenuItemPath(MenuItem):
 class MenuItemVideo(BaseMenuLink):
     def __init__(self, video, iconimage="DefaultFolder.png"):
         name = '[%s] %s' % (video.backend, video.title)
-        BaseMenuLink.__init__(self, name, video.url, constants.VIDEO,
-                              video.thumbnail.url if video.thumbnail.url else iconimage)
+        BaseMenuLink.__init__(
+            self,
+            name,
+            video.url,
+            constants.VIDEO,
+            video.thumbnail.url or iconimage,
+        )
+
         self.video = video
         self.params["id"] = self.video.id
 
@@ -55,13 +61,17 @@ class MenuItemVideo(BaseMenuLink):
 
         description = u'%s' % self.video.description
 
-        return {"Title": self.video.title,
-                "Year": year,
-                "Plot": description,
-                "PlotOutline": description[0:30] if len(description) > 30 else description,
-                "Director": self.video.author if self.video.author else 'Unknown',
-                "Duration": duration,
-                "Date": date}
+        return {
+            "Title": self.video.title,
+            "Year": year,
+            "Plot": description,
+            "PlotOutline": description[0:30]
+            if len(description) > 30
+            else description,
+            "Director": self.video.author or 'Unknown',
+            "Duration": duration,
+            "Date": date,
+        }
 
     def format_date(self, video_date):
         date = datetime.now().strftime("%d/%m/%Y")

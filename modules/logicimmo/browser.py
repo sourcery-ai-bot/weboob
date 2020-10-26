@@ -51,20 +51,21 @@ class LogicimmoBrowser(PagesBrowser):
     def search_housings(self, type, cities, nb_rooms, area_min, area_max, cost_min, cost_max, house_types):
         options = []
 
-        ret = []
-        for house_type in house_types:
-            if house_type in self.RET:
-                ret.append(self.RET.get(house_type))
+        ret = [
+            self.RET.get(house_type)
+            for house_type in house_types
+            if house_type in self.RET
+        ]
 
         if len(ret):
             options.append('groupprptypesids=%s' % ','.join(ret))
 
-        options.append('pricemin=%s' % (cost_min if cost_min else '0'))
+        options.append('pricemin=%s' % (cost_min or '0'))
 
         if cost_max:
             options.append('pricemax=%s' % cost_max)
 
-        options.append('areamin=%s' % (area_min if area_min else '0'))
+        options.append('areamin=%s' % (area_min or '0'))
 
         if area_max:
             options.append('areamax=%s' % area_max)

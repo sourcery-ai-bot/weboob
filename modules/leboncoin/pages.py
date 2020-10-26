@@ -64,10 +64,11 @@ class HousingListPage(HTMLPage):
         return self.find_select_value(asked_cost, '//select[@id="pe"]/option')
 
     def find_select_value(self, ref_value, selector):
-        select = {}
-        for item in self.doc.xpath(selector):
-            if item.attrib['value']:
-                select[CleanDecimal('.')(item)] = CleanDecimal('./@value')(item)
+        select = {
+            CleanDecimal('.')(item): CleanDecimal('./@value')(item)
+            for item in self.doc.xpath(selector)
+            if item.attrib['value']
+        }
 
         select_keys = select.keys()
         select_keys.sort()
@@ -121,7 +122,7 @@ class HousingPage(HTMLPage):
         klass = Housing
 
         def parse(self, el):
-            details = dict()
+            details = {}
             self.env['location'] = NotAvailable
             for tr in el.xpath('//div[@class="floatLeft"]/table/tr'):
                 if 'Ville' in CleanText('./th')(tr):

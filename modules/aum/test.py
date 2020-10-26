@@ -27,7 +27,7 @@ class AuMTest(BackendTest):
 
     def test_new_messages(self):
         try:
-            for message in self.backend.iter_unread_messages():
+            for _ in self.backend.iter_unread_messages():
                 pass
         except BrowserUnavailable:
             # enough frequent to do not care about.
@@ -36,7 +36,7 @@ class AuMTest(BackendTest):
     def test_contacts(self):
         try:
             contacts = list(self.backend.iter_contacts())
-            if len(contacts) == 0:
+            if not contacts:
                 # so bad, we can't test that...
                 return
             self.backend.fillobj(contacts[0], ['photos', 'profile'])

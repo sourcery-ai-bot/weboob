@@ -46,8 +46,7 @@ class CICModule(Module, CapBank):
         return self.create_browser(self.config['login'].get(), self.config['password'].get())
 
     def iter_accounts(self):
-        for account in self.browser.get_accounts_list():
-            yield account
+        yield from self.browser.get_accounts_list()
 
     def get_account(self, _id):
         account = self.browser.get_account(_id)

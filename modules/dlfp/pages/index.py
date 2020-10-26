@@ -23,11 +23,10 @@ from weboob.deprecated.browser import Page
 
 class DLFPPage(Page):
     def is_logged(self):
-        for form in self.document.getiterator('form'):
-            if form.attrib.get('id', None) == 'new_account_sidebar':
-                return False
-
-        return True
+        return all(
+            form.attrib.get('id', None) != 'new_account_sidebar'
+            for form in self.document.getiterator('form')
+        )
 
 
 class IndexPage(DLFPPage):

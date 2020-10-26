@@ -42,7 +42,7 @@ class MessagesPage(Page):
             jsparams = [i.strip('\'" ') for i in jsparams.split(',')]
             page_id, _id, unread = jsparams
             # this means unread on the website
-            unread = False if unread == "false" else True
+            unread = unread != "false"
             # 2012/02/29:01h30min45sec
             dt_match = re.match('(\d+)/(\d+)/(\d+):(\d+)h(\d+)min(\d+)sec', date_raw).groups()
             dt_match = [int(d) for d in dt_match]

@@ -73,5 +73,4 @@ class CitelisBrowser(Browser):
                           % (self.PROTOCOL, self.DOMAIN))
             self.page.search()
         self.location(self.page.get_csv_url())
-        for transaction in self.page.iter_transactions():
-            yield transaction
+        yield from self.page.iter_transactions()

@@ -53,7 +53,7 @@ class PluzzBrowser(PagesBrowser):
                     videos.append(video)
                     videos += list(self.page.iter_videos())
 
-        return videos if len(videos) > 0 else self.index_page.go(pattern=pattern).iter_videos()
+        return videos or self.index_page.go(pattern=pattern).iter_videos()
 
     def get_program_list(self):
         return list(self.programs_page.go().iter_programs())
@@ -68,8 +68,7 @@ class PluzzBrowser(PagesBrowser):
 
     def read_url(self, url):
         r = self.open(url, stream=True)
-        buf = r.iter_lines()
-        return buf
+        return r.iter_lines()
 
     def latest_videos(self):
         return self.latest.go().iter_videos()

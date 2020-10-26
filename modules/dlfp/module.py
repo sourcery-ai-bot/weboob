@@ -63,10 +63,7 @@ class DLFPModule(Module, CapMessages, CapMessagesPost, CapContent):
 
     def create_default_browser(self):
         username = self.config['username'].get()
-        if username:
-            password = self.config['password'].get()
-        else:
-            password = None
+        password = self.config['password'].get() if username else None
         return self.create_browser(username, password)
 
     def deinit(self):
@@ -80,10 +77,11 @@ class DLFPModule(Module, CapMessages, CapMessagesPost, CapContent):
     #### CapMessages ##############################################
 
     def iter_threads(self):
-        whats = set()
-        for param, url in self.FEEDS.iteritems():
-            if self.config[param].get():
-                whats.add(url)
+        whats = {
+            url
+            for param, url in self.FEEDS.iteritems()
+            if self.config[param].get()
+        }
 
         for what in whats:
             for article in Newsfeed(what, rssid).iter_entries():

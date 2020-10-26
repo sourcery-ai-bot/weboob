@@ -111,9 +111,7 @@ class CICBrowser(Browser):
             if not self.is_on_page(OperationsPage):
                 return
 
-            for op in self.page.get_history():
-                yield op
-
+            yield from self.page.get_history()
             go_next = self.page.go_next()
 
     def get_history(self, account):
@@ -138,7 +136,7 @@ class CICBrowser(Browser):
             args = dict(parse_qsl(v.query))
             # useful with 12 -> 1
             if int(args['mois']) < month:
-                month = month + 1
+                month += 1
             else:
                 month = int(args['mois'])
 

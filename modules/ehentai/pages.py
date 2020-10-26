@@ -32,10 +32,7 @@ class LoginPage(Page):
     def is_logged(self):
         success_p = self.document.xpath(
                 '//p[text() = "Login Successful. You will be returned momentarily."]')
-        if len(success_p):
-            return True
-        else:
-            return False
+        return bool(len(success_p))
 
 
 class HomePage(Page):
@@ -60,10 +57,7 @@ class GalleryPage(Page):
         return [n for n in self.document.xpath("(//table[@class='ptt'])[1]//td/text()") if re.match(r"\d+", n)]
 
     def gallery_exists(self, gallery):
-        if self.document.xpath("//h1"):
-            return True
-        else:
-            return False
+        return bool(self.document.xpath("//h1"))
 
     def fill_gallery(self, gallery):
         gallery.title = self.document.xpath("//h1[@id='gn']/text()")[0]
@@ -80,11 +74,7 @@ class GalleryPage(Page):
         gallery.date = datetime.strptime(date_string, "%Y-%m-%d %H:%M")
         rating_string = self.document.xpath("//td[@id='rating_label']/text()")[0]
         rating_match = re.search(r"\d+\.\d+", rating_string)
-        if rating_match is None:
-            gallery.rating = None
-        else:
-            gallery.rating = float(rating_match.group(0))
-
+        gallery.rating = None if rating_match is None else float(rating_match.group(0))
         gallery.rating_max = 5
 
         try:

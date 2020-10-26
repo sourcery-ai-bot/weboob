@@ -115,8 +115,7 @@ class LCLEnterpriseBrowser(Browser):
                           urlencode({'numPage': str(n)}),
                           no_login=True)
 
-            for tr in self.page.get_operations():
-                yield tr
+            yield from self.page.get_operations()
 
     def get_cb_operations(self, account):
         raise NotImplementedError()

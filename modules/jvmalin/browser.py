@@ -54,9 +54,7 @@ class JVMalin(Browser):
 
         self.location(dest)
 
-        roadmap = {}
-        roadmap['steps'] = list(self.page.get_steps())
-        return roadmap
+        return {'steps': list(self.page.get_steps())}
 
     def is_logged(self):
         """ Do not need to be logged """

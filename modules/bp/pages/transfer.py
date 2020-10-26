@@ -57,8 +57,7 @@ class TransferSummary(Page):
 
         match = re.search("Votre virement N.+ ([0-9]+) ", text)
         if match:
-            id_transfer = match.groups()[0]
-            return id_transfer
+            return match.groups()[0]
 
         if text.startswith(u"Votre virement n'a pas pu"):
             if p.find('br') is not None:

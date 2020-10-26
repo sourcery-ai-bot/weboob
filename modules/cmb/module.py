@@ -168,10 +168,7 @@ class CmbModule(Module, CapBank):
             self.login()
 
         page = "https://www.cmb.fr/domiweb/prive/particulier/releve/"
-        if account._cmbtype == 'D':
-            page += "10-releve.act"
-        else:
-            page += "2-releve.act"
+        page += "10-releve.act" if account._cmbtype == 'D' else "2-releve.act"
         page +="?noPageReleve=1&indiceCompte="
         page += account._cmbvaleur
         page += "&typeCompte="
@@ -203,8 +200,7 @@ class CmbModule(Module, CapBank):
             if table.get('id') != "tableMouvements":
                 continue
             for tr in table.getiterator('tr'):
-                if (tr.get('class') != 'LnTit' and
-                        tr.get('class') != 'LnTot'):
+                if tr.get('class') not in ['LnTit', 'LnTot']:
                     operation = Transaction(i)
                     td = tr.xpath('td')
 

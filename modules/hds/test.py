@@ -26,5 +26,5 @@ class HDSTest(BackendTest):
     MODULE = 'hds'
 
     def test_new_messages(self):
-        for message in limit(self.backend.iter_unread_messages(), 10):
+        for _ in limit(self.backend.iter_unread_messages(), 10):
             pass

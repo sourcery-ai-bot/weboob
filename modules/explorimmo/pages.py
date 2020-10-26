@@ -31,8 +31,7 @@ from weboob.capabilities.housing import Housing, HousingPhoto, City
 
 class DictElement(ListElement):
     def find_elements(self):
-        for el in self.el[0].get(self.item_xpath):
-            yield el
+        yield from self.el[0].get(self.item_xpath)
 
 
 class CitiesPage(JsonPage):
@@ -131,8 +130,7 @@ class HousingPage2(JsonPage):
             return photos
 
         def obj_details(self):
-            details = {}
-            details['fees'] = Dict('characteristics/fees')(self)
+            details = {'fees': Dict('characteristics/fees')(self)}
             details['bedrooms'] = Dict('characteristics/bedroomCount')(self)
             details['energy'] = Dict('characteristics/energyConsumptionCategory')(self)
             rooms = Dict('characteristics/roomCount')(self)
@@ -169,7 +167,7 @@ class HousingPage(HTMLPage):
             return photos
 
         def obj_details(self):
-            details = dict()
+            details = {}
             for item in XPath('//div[@class="features clearfix"]/ul/li')(self):
                 key = CleanText('./span[@class="name"]')(item)
                 value = CleanText('./span[@class="value"]')(item)

@@ -55,8 +55,8 @@ class VideoPage(Page):
         obj = self.parser.select(self.document.getroot(), 'h1#player_subjectTitle')
         if len(obj) < 1:
             obj = self.parser.select(self.document.getroot(), 'title')
-            if len(obj) < 1:
-                return None
+        if len(obj) < 1:
+            return None
         title = obj[0].text.strip()
         obj = self.parser.select(self.document.getroot(), 'span.ep_subtitle')
         if len(obj) < 1:

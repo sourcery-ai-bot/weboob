@@ -26,6 +26,6 @@ class GanAssurancesTest(BackendTest):
 
     def test_banquepop(self):
         l = list(self.backend.iter_accounts())
-        if len(l) > 0:
+        if l:
             a = l[0]
             list(self.backend.iter_history(a))

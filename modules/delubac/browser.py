@@ -84,9 +84,7 @@ class DelubacBrowser(Browser):
 
         while True:
             assert self.is_on_page(OperationsPage)
-            for i in self.page.iter_history():
-                yield i
-
+            yield from self.page.iter_history()
             next_page = self.page.next_page()
             if not next_page:
                 break

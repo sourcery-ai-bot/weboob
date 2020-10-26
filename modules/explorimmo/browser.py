@@ -47,10 +47,11 @@ class ExplorimmoBrowser(PagesBrowser):
 
     def search_housings(self, type, cities, nb_rooms, area_min, area_max, cost_min, cost_max, house_types):
 
-        ret = []
-        for house_type in house_types:
-            if house_type in self.RET:
-                ret.append(self.RET.get(house_type))
+        ret = [
+            self.RET.get(house_type)
+            for house_type in house_types
+            if house_type in self.RET
+        ]
 
         data = {'location': ','.join(cities),
                 'areaMin': area_min or '',

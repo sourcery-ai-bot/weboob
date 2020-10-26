@@ -260,10 +260,7 @@ class AllocineBrowser(Browser):
             real_name = unicode(jres['realName'])
         if 'gender' in jres:
             gcode = jres['gender']
-            if gcode == '1':
-                gender = u'Male'
-            else:
-                gender = u'Female'
+            gender = u'Male' if gcode == '1' else u'Female'
         if 'picture' in jres:
             thumbnail_url = unicode(jres['picture']['href'])
         if 'nationality' in jres:
@@ -317,7 +314,11 @@ class AllocineBrowser(Browser):
             return
         if 'castMember' in jres:
             for cast in jres['castMember']:
-                if (role_filter is None or (role_filter is not None and cast['activity']['$'].lower().strip() == role_filter.lower().strip())):
+                if (
+                    role_filter is None
+                    or cast['activity']['$'].lower().strip()
+                    == role_filter.lower().strip()
+                ):
                     id = cast['person']['code']
                     name = unicode(cast['person']['name'])
                     short_description = unicode(cast['activity']['$'])
@@ -356,7 +357,11 @@ class AllocineBrowser(Browser):
         else:
             return
         for m in jres['participation']:
-            if (role_filter is None or (role_filter is not None and m['activity']['$'].lower().strip() == role_filter.lower().strip())):
+            if (
+                role_filter is None
+                or m['activity']['$'].lower().strip()
+                == role_filter.lower().strip()
+            ):
                 prod_year = '????'
                 if 'productionYear' in m['movie']:
                     prod_year = m['movie']['productionYear']
@@ -515,9 +520,8 @@ class AllocineBrowser(Browser):
             video.description = unicode(movie['synopsis'].replace('<p>', '').replace('</p>', ''))
         elif 'synopsisShort' in movie:
             video.description = unicode(movie['synopsisShort'].replace('<p>', '').replace('</p>', ''))
-        if 'castingShort' in movie:
-            if 'directors' in movie['castingShort']:
-                video.author = unicode(movie['castingShort']['directors'])
+        if 'castingShort' in movie and 'directors' in movie['castingShort']:
+            video.author = unicode(movie['castingShort']['directors'])
         if 'runtime' in movie:
             video.duration = timedelta(seconds=int(movie['runtime']))
         return video

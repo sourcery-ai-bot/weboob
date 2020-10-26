@@ -99,9 +99,8 @@ class Citibank(object):
         yield account
 
     def iter_history(self, account):
-        for trans in chain(self.iter_history_recent(account),
-                           self.iter_history_statements(account)):
-            yield trans
+        yield from chain(self.iter_history_recent(account),
+                           self.iter_history_statements(account))
 
     def start(self):
         # To avoid ImportError during e.g. building modules list.
@@ -215,8 +214,7 @@ class Citibank(object):
             # Transactions in a statement can go in different order.
             ts = sorted(parser.read_transactions(),
                         cmp=lambda t1, t2: cmp(t2.date, t1.date))
-            for t in ts:
-                yield t
+            yield from ts
         self.finish()
 
     def find(self, selector):

@@ -60,7 +60,7 @@ def main(filename):
     for r in results:
         stored.add(r[0])
         authors.add(r[1])
-    stored_authors = set([s[0] for s in db.execute('SELECT name FROM authors')])
+    stored_authors = {s[0] for s in db.execute('SELECT name FROM authors')}
     sys.stdout.write('ok\n')
 
     br = hds.browser

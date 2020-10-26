@@ -145,7 +145,12 @@ class AccountsPage(BredBasePage):
                 continue
 
             try:
-                amount = sum([Decimal(FrenchTransaction.clean_amount(txt)) for txt in cols[-1].itertext() if len(txt.strip()) > 0])
+                amount = sum(
+                    Decimal(FrenchTransaction.clean_amount(txt))
+                    for txt in cols[-1].itertext()
+                    if len(txt.strip()) > 0
+                )
+
             except InvalidOperation:
                 continue
 

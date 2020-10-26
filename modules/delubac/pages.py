@@ -72,9 +72,7 @@ class OperationsPage(Page):
     _NEXT_XPATH = '//a[contains(@class,"pg_next")]/@href'
 
     def iter_history(self):
-        i = 0
-        for line in self.document.xpath(self._LINE_XPATH):
-            i += 1
+        for i, line in enumerate(self.document.xpath(self._LINE_XPATH), start=1):
             operation = Transaction(i)
 
             date = line.xpath('.//td[@class="nlb d"]')[0].text_content().strip()

@@ -71,7 +71,7 @@ class DownloadAction(VideoobBaseAction):
 
     def download(self, _id, backend):
         dl_dir = common_xbmc.get_settings('downloadPath')
-        self.videoobmc.download(_id, dl_dir if dl_dir else common_xbmc.get_addon_dir(), backend)
+        self.videoobmc.download(_id, dl_dir or common_xbmc.get_addon_dir(), backend)
         common_xbmc.display_info(common_xbmc.get_translation('30302'))
 
 

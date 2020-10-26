@@ -43,7 +43,7 @@ def _check_call_py24(cmd, *args, **kwargs):
 
     class CalledProcessError(Exception):
         pass
-    if not res == 0:
+    if res != 0:
         msg = "Command '%s' return non-zero exit status %d" % (cmd, res)
         raise CalledProcessError(msg)
 vars(subprocess).setdefault('check_call', _check_call_py24)

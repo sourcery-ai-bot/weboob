@@ -93,8 +93,7 @@ class IngBrowser(LoginBrowser):
     @need_login
     @check_bourse
     def get_coming(self, account):
-        if account.type != Account.TYPE_CHECKING and\
-                account.type != Account.TYPE_SAVINGS:
+        if account.type not in [Account.TYPE_CHECKING, Account.TYPE_SAVINGS]:
             raise NotImplementedError()
         if self.where != "start":
             self.accountspage.go()
@@ -120,11 +119,9 @@ class IngBrowser(LoginBrowser):
     @check_bourse
     def get_history(self, account):
         if account.type == Account.TYPE_MARKET:
-            for result in self.get_history_titre(account):
-                yield result
+            yield from self.get_history_titre(account)
             return
-        elif account.type != Account.TYPE_CHECKING and\
-                account.type != Account.TYPE_SAVINGS:
+        elif account.type not in [Account.TYPE_CHECKING, Account.TYPE_SAVINGS]:
             raise NotImplementedError()
 
         if self.where != "start":
@@ -179,14 +176,12 @@ class IngBrowser(LoginBrowser):
     @check_bourse
     def get_recipients(self, account):
         self.transferpage.stay_or_go()
-        if self.page.ischecked(account.id):
-            return self.page.get_recipients()
-        else:
+        if not self.page.ischecked(account.id):
             # It is hard to check the box and to get the real list.
             # We try an alternative way like normal users
             self.get_history(account).next()
             self.transferpage.stay_or_go()
-            return self.page.get_recipients()
+        return self.page.get_recipients()
 
     @check_bourse
     def transfer(self, account, recipient, amount, reason):

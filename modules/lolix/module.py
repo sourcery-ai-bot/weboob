@@ -139,15 +139,15 @@ class LolixModule(Module, CapJob):
 
     def search_job(self, pattern=None):
         with self.browser:
-            for job_advert in self.browser.advanced_search_job(pattern=pattern):
-                yield job_advert
+            yield from self.browser.advanced_search_job(pattern=pattern)
 
     def advanced_search_job(self):
-        for advert in self.browser.advanced_search_job(region=self.config['region'].get(),
-                                                       poste=self.config['poste'].get(),
-                                                       contrat=int(self.config['contrat'].get()),
-                                                       limit_date=self.config['limit_date'].get()):
-            yield advert
+        yield from self.browser.advanced_search_job(
+            region=self.config['region'].get(),
+            poste=self.config['poste'].get(),
+            contrat=int(self.config['contrat'].get()),
+            limit_date=self.config['limit_date'].get(),
+        )
 
     def get_job_advert(self, _id, advert=None):
         with self.browser:

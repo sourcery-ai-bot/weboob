@@ -52,11 +52,7 @@ class FreeKeyboard(object):
                 for y in range(12, 27):
                     (r, g, b) = matrix[x, y]
                     # If the pixel is "red" enough
-                    if g + b < 450:
-                        s += "1"
-                    else:
-                        s += "0"
-
+                    s += "1" if g + b < 450 else "0"
             self.fingerprints.append(s)
 
     def get_symbol_code(self, digit):
@@ -70,10 +66,7 @@ class FreeKeyboard(object):
         best = 0
         result = None
         for i, string in enumerate(self.fingerprints):
-            match = 0
-            for j, bit in enumerate(string):
-                if bit == fingerprint[j]:
-                    match += 1
+            match = sum(1 for j, bit in enumerate(string) if bit == fingerprint[j])
             if match > best:
                 best = match
                 result = i

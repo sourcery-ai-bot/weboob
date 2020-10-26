@@ -118,11 +118,7 @@ def create_list_item(name, itemInfoType="Video", itemInfoLabels=None, iconimage=
     if c_items:
         lstItem.addContextMenuItems(c_items, replaceItems=True)
 
-    if itemInfoLabels:
-        iLabels = itemInfoLabels
-    else:
-        iLabels = {"Title": name, }
-
+    iLabels = itemInfoLabels or {"Title": name, }
     lstItem.setInfo(type=itemInfoType, infoLabels=iLabels)
     if isPlayable:
         lstItem.setProperty('IsPlayable', "true")

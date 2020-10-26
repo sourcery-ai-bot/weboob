@@ -38,8 +38,8 @@ class ReaderV2(Page):
             'http://www.izneo.com/playerv2/ajax.php?ean=%s&action=get_list_jpg'
             % ean))
 
+        width = 1200  # maximum width
         for page in pages['list']:
-            width = 1200  # maximum width
             yield BaseImage(page['page'],
                     gallery=gallery,
                     url=("http://www.izneo.com/playerv2/%s/%s/%s/%d/%s" %
@@ -78,11 +78,10 @@ class IzneoModule(Module, CapGallery):
         if match is None:
             return None
 
-        _id = match.group(1)
-
-        gallery = BaseGallery(_id, url=('http://www.izneo.com/readv2-%s' % _id))
         with self.browser:
-            return gallery
+            _id = match.group(1)
+
+            return BaseGallery(_id, url=('http://www.izneo.com/readv2-%s' % _id))
 
     def fill_gallery(self, gallery, fields):
         gallery.title = gallery.id

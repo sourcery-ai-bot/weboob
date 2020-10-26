@@ -49,9 +49,7 @@ class AmeliProBrowser(Browser):
         self.location(self.homep)
 
     def is_logged(self):
-        if self.is_on_page(LoginPage):
-            return False
-        return True
+        return not self.is_on_page(LoginPage)
 
     def login(self):
         assert isinstance(self.username, basestring)

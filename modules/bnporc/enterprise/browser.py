@@ -40,9 +40,8 @@ class BNPEnterprise(Browser):
         self.location('%s://%s/NSAccess' % (self.PROTOCOL, self.DOMAIN))
 
     def is_logged(self):
-        if self.page:
-            if self.page.get_error() is not None:
-                return False
+        if self.page and self.page.get_error() is not None:
+            return False
         return not self.is_on_page(LoginPage)
 
     def login(self):
@@ -65,8 +64,7 @@ class BNPEnterprise(Browser):
         # the "en valeur" mode is ch8=1000
         if not self.is_on_page(AccountsPage):
             self.location('/UNE?ch6=0&ch8=2000&chA=1&chh=O')
-        for account in self.page.get_list():
-            yield account
+        yield from self.page.get_list()
 
     def get_account(self, _id):
         for a in self.get_accounts_list():
@@ -78,9 +76,7 @@ class BNPEnterprise(Browser):
         while numPage is not None:
             self.location(url + '&chP=%s' % numPage)
 
-            for tr in self.page.iter_history():
-                yield tr
-
+            yield from self.page.iter_history()
             nextNumPage = self.page.get_next_numpage()
             if nextNumPage is not None and nextNumPage <= numPage:
                 self.logger.error("Currently on page %d, next page cannot be %d!" % (numPage, nextNumPage))

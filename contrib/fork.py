@@ -67,10 +67,8 @@ desktop_tr = [('qboobmsg.desktop','QBisoumsg'),
              ]
 
 mask = base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3wEODzYzz5PthwAAAB1pVFh0Q29tbWVudAAAAAAAQ3JlYXRlZCB3aXRoIEdJTVBkLmUHAAABsklEQVR42u3avyvEcRzH8adEXJKSOlFXStSVlDIow5UMBoOiDAyUwWAwSDIYlIG6EoPBYFAGSQZlUDdIKWUQJQxSIiElv7ow8K1L13V33oP35/t+1vsPeCyfu3p9wbIsy7Isy7K0FvIzvg/4BLr8iB/7wXvX7Cf83C/8J/AC1PgBv5oE7901UOYqvBDYSYH37gjIdw0fBE7SwHsXcwkfBm4zwHu34gI+Arxngfcuqhnf/Qd44rVrxA8L4Wc14meE8KMa8ctC+F5t8DxgWwAeB1q14UuBQwH8A1CvDV8NXAngz4FKbfgm4FkAvwcUacN3CD12Gxpf+kEh/IJG/KQQfkIjflEIP6ANngNs+vV/fTGwLwB/Ahq14UPAhQD+EqjShm8AHgXwB0CJNnwb8CGA3wJyteH7hR67JY0/c+NC+CmN+Hkh/JBG/JoQvlMbPADsCsBfUbjrlQOnAvgboFYbvh64E8Afo3THiwngYyje7wrIbKdzcrIKkt1eF8WhwsBbBvgRHCySJr4Hh0s1YsaBFnxQsjHzHqjDR00n4M+ACnzYOt/f6ASwLMuyLMuyLMv6x30B2yNJ8I8ofLMAAAAASUVORK5CYII=')
-f = open('bisoumask.png','w')
-f.write(mask)
-f.close()
-
+with open('bisoumask.png','w') as f:
+    f.write(mask)
 for i in icons_tr + modules_tr:
     try:
         subprocess.call('mogrify %s -blur 0x4 2> /dev/null > /dev/null' % i, shell=True)

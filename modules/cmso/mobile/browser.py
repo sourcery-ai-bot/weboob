@@ -79,7 +79,5 @@ class CmsoMobileBrowser(Browser):
             self.location(link)
             assert self.is_on_page(TransactionsPage)
 
-            for tr in self.page.get_history():
-                yield tr
-
+            yield from self.page.get_history()
             link = self.page.get_next_link()

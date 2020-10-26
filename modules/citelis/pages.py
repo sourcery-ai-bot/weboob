@@ -62,8 +62,7 @@ class SummaryPage(Page):
                 debit, credit = self.parser.select(tr, 'td.amount', 4)[-2:]  # keep the last 2
                 debit = self.clean_amount(debit, debit=True)
                 credit = self.clean_amount(credit, debit=False)
-                amount = credit or debit
-                return amount
+                return credit or debit
 
 
 class UselessPage(Page):
@@ -95,10 +94,7 @@ class TransactionsPage(Page):
 
 class TransactionsCsvPage(Page):
     def guess_format(self, amount):
-        if re.search(r'\d\.\d\d$', amount):
-            date_format = "%m/%d/%Y"
-        else:
-            date_format = "%d/%m/%Y"
+        date_format = "%m/%d/%Y" if re.search(r'\d\.\d\d$', amount) else "%d/%m/%Y"
         time_format = "%H:%M:%S"
         return date_format + ' ' + time_format
 

@@ -277,8 +277,7 @@ class AdeccoModule(Module, CapJob):
 
     def search_job(self, pattern=None):
         with self.browser:
-            for advert in self.browser.search_job(pattern):
-                yield advert
+            yield from self.browser.search_job(pattern)
 
     def decode_choice(self, place):
         splitted_choice = place.split('|')
@@ -292,14 +291,14 @@ class AdeccoModule(Module, CapJob):
     def advanced_search_job(self):
         region, departement = self.decode_choice(self.config['place'].get())
         domain, category = self.decode_choice(self.config['activity_domain'].get())
-        for advert in self.browser.advanced_search_job(publication_date=int(self.config['publication_date'].get()),
-                                                       contract_type=int(self.config['contract'].get()),
-                                                       conty=departement,
-                                                       region=region,
-                                                       job_category=category,
-                                                       activity_domain=domain
-                                                       ):
-            yield advert
+        yield from self.browser.advanced_search_job(
+            publication_date=int(self.config['publication_date'].get()),
+            contract_type=int(self.config['contract'].get()),
+            conty=departement,
+            region=region,
+            job_category=category,
+            activity_domain=domain,
+        )
 
     def get_job_advert(self, _id, advert=None):
         with self.browser:

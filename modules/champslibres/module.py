@@ -48,8 +48,7 @@ class ChampslibresModule(Module, CapBook):
         return browser
 
     def get_rented(self):
-        for book in self.browser.get_rented_books_list():
-            yield book
+        yield from self.browser.get_rented_books_list()
 
     def get_booked(self):
         raise NotImplementedError()
@@ -60,8 +59,7 @@ class ChampslibresModule(Module, CapBook):
     def iter_books(self):
         #for book in self.get_booked():
         #    yield book
-        for book in self.get_rented():
-            yield book
+        yield from self.get_rented()
 
     def get_book(self, _id):
         raise NotImplementedError()

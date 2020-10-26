@@ -37,8 +37,7 @@ class ArticlePage(GenericNewsPage):
             return self.parser.tostring(self.get_element_body())
         except NoBodyElement:
             meta = self.document.xpath('//meta[@name="description"]')[0]
-            txt = meta.attrib['content']
-            return txt
+            return meta.attrib['content']
 
     def get_title(self):
         title = GenericNewsPage.get_title(self)

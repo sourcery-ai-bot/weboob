@@ -72,10 +72,11 @@ class ArteBrowser(Browser):
         r = self.openurl(url)
         baseurl = url.rpartition('/')[0]
 
-        links_by_quality = []
-        for line in r.readlines():
-            if not line.startswith('#'):
-                links_by_quality.append(u'%s/%s' % (baseurl, line.replace('\n', '')))
+        links_by_quality = [
+            u'%s/%s' % (baseurl, line.replace('\n', ''))
+            for line in r.readlines()
+            if not line.startswith('#')
+        ]
 
         if len(links_by_quality):
             try:

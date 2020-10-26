@@ -61,14 +61,14 @@ class BNPorcModule(Module, CapBank, CapMessages):
     def create_default_browser(self):
         b = {'pp': BNPorc, 'ent': BNPEnterprise}
         self.BROWSER = b[self.config['website'].get()]
-        #if self.config['rotating_password'].get().isdigit() and len(self.config['rotating_password'].get()) == 6:
-        #    rotating_password = self.config['rotating_password'].get()
-        #else:
-        rotating_password = None
         if self.config['website'].get() != 'pp':
             return self.create_browser(self.config['login'].get(),
                                        self.config['password'].get())
         else:
+            #if self.config['rotating_password'].get().isdigit() and len(self.config['rotating_password'].get()) == 6:
+            #    rotating_password = self.config['rotating_password'].get()
+            #else:
+            rotating_password = None
             return self.create_browser(self.config['login'].get(),
                                        self.config['password'].get(),
                                        password_changed_cb=self._password_changed_cb,
@@ -80,8 +80,7 @@ class BNPorcModule(Module, CapBank, CapMessages):
         self.config.save()
 
     def iter_accounts(self):
-        for account in self.browser.get_accounts_list():
-            yield account
+        yield from self.browser.get_accounts_list()
 
     def get_account(self, _id):
         if not _id.isdigit():

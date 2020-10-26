@@ -229,8 +229,7 @@ class ApecModule(Module, CapJob):
 
     def search_job(self, pattern=None):
         with self.browser:
-            for job_advert in self.browser.search_job(pattern=pattern):
-                yield job_advert
+            yield from self.browser.search_job(pattern=pattern)
 
     def decode_choice(self, choice):
         splitted_choice = choice.split('|')
@@ -240,14 +239,15 @@ class ApecModule(Module, CapJob):
             return ''
 
     def advanced_search_job(self):
-        for job_advert in self.browser.advanced_search_job(region=self.decode_choice(self.config['place'].get()),
-                                                           fonction=self.decode_choice(self.config['fonction'].get()),
-                                                           secteur=self.config['secteur'].get(),
-                                                           salaire=self.config['salaire'].get(),
-                                                           contrat=self.config['contrat'].get(),
-                                                           limit_date=self.config['limit_date'].get(),
-                                                           level=self.config['level'].get()):
-            yield job_advert
+        yield from self.browser.advanced_search_job(
+            region=self.decode_choice(self.config['place'].get()),
+            fonction=self.decode_choice(self.config['fonction'].get()),
+            secteur=self.config['secteur'].get(),
+            salaire=self.config['salaire'].get(),
+            contrat=self.config['contrat'].get(),
+            limit_date=self.config['limit_date'].get(),
+            level=self.config['level'].get(),
+        )
 
     def get_job_advert(self, _id, advert=None):
         with self.browser:

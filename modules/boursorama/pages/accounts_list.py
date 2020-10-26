@@ -83,17 +83,14 @@ class AccountsList(Page):
 
                     elif td.get('class', '') == 'account-total':
                         span = td.find('span')
-                        if span is None:
-                            balance = td.text
-                        else:
-                            balance = span.text
+                        balance = td.text if span is None else span.text
                         account.currency = account.get_currency(balance)
                         balance = FrenchTransaction.clean_amount(balance)
-                        if balance != "":
-                            account.balance = Decimal(balance)
-                        else:
-                            account.balance = Decimal(0)
+                        account.balance = Decimal(balance) if balance != "" else Decimal(0)
                 else:
                     # because of some weird useless <tr>
-                    if account.id is not None and (not account._link_id or not 'moneycenter' in account._link_id):
+                    if account.id is not None and (
+                        not account._link_id
+                        or 'moneycenter' not in account._link_id
+                    ):
                         yield account

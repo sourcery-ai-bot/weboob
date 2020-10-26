@@ -87,10 +87,10 @@ class BasePage(_BasePage):
         return token
 
     def get_params(self):
-        params = {}
-        for field in self.document.xpath('//input'):
-            params[field.attrib['name']] = field.attrib.get('value', '')
-        return params
+        return {
+            field.attrib['name']: field.attrib.get('value', '')
+            for field in self.document.xpath('//input')
+        }
 
     def get_button_actions(self):
         actions = {}
@@ -309,13 +309,15 @@ class AccountsPage(BasePage):
                     }
 
     def is_error(self):
-        for script in self.document.xpath('//script'):
-            if script.text is not None and \
-               (u"Le service est momentanément indisponible" in script.text or
-                u"Votre abonnement ne vous permet pas d'accéder à ces services" in script.text):
-                return True
-
-        return False
+        return any(
+            script.text is not None
+            and (
+                u"Le service est momentanément indisponible" in script.text
+                or u"Votre abonnement ne vous permet pas d'accéder à ces services"
+                in script.text
+            )
+            for script in self.document.xpath('//script')
+        )
 
     def is_short_list(self):
         return len(self.document.xpath('//script[contains(text(), "EQUIPEMENT_COMPLET")]')) > 0
@@ -514,9 +516,10 @@ class TransactionsPage(BasePage):
         if len(nxt) == 0 or nxt[0].attrib.get('class', '') == 'nxt-dis':
             return None
 
-        params = {}
-        for field in self.document.xpath('//input'):
-            params[field.attrib['name']] = field.attrib.get('value', '')
+        params = {
+            field.attrib['name']: field.attrib.get('value', '')
+            for field in self.document.xpath('//input')
+        }
 
         params['validationStrategy'] = 'NV'
         params['pagingDirection'] = 'NEXT'
@@ -606,7 +609,11 @@ class TransactionsPage(BasePage):
     def no_operations(self):
         if len(self.document.xpath('//table[@id="tbl1" or @id="TabFact"]//td[@colspan]')) > 0:
             return True
-        if len(self.document.xpath(u'//div[contains(text(), "Accès à LineBourse")]')) > 0:
-            return True
-
-        return False
+        return (
+            len(
+                self.document.xpath(
+                    u'//div[contains(text(), "Accès à LineBourse")]'
+                )
+            )
+            > 0
+        )

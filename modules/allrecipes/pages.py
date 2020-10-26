@@ -86,11 +86,8 @@ class RecipePage(Page):
 
         instructions = u''
         l_divinst = self.parser.select(self.document.getroot(), 'div.directLeft li')
-        num_instr = 1
-        for inst in l_divinst:
+        for num_instr, inst in enumerate(l_divinst, start=1):
             instructions += '%s: %s\n' % (num_instr, inst.text_content())
-            num_instr += 1
-
         prepmin = 0
         emprep = self.parser.select(self.document.getroot(), 'span#prepHoursSpan em')
         if len(emprep) > 0:

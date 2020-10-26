@@ -168,13 +168,11 @@ class AccountsList(CragrBasePage):
             self.logger.debug('Analyzing token: "%s"' % token)
             date_analysis = self.look_like_date_only(token)
             if date_analysis:
-                current_operation = {}
-                current_operation['date'] = date_analysis.groups()[0]
+                current_operation = {'date': date_analysis.groups()[0]}
             else:
                 date_desc_analysis = self.look_like_date_and_description(token)
                 if date_desc_analysis:
-                    current_operation = {}
-                    current_operation['date'] = date_desc_analysis.groups()[0]
+                    current_operation = {'date': date_desc_analysis.groups()[0]}
                     current_operation['label'] = date_desc_analysis.groups()[1]
                 elif self.look_like_amount(token):
                     # we consider the amount is the last information we get for an operation
@@ -271,7 +269,7 @@ class AccountsList(CragrBasePage):
         """
         data = u''
         for text in xml_elmt.itertext():
-            data = data + u'%s ' % text
+            data += u'%s ' % text
         data = re.sub(' +', ' ', data.replace("\n", ' ').strip())
         return data
 

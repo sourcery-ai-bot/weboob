@@ -70,8 +70,6 @@ class GuerrillamailModule(Module, CapMessages, CapMessagesPost):
 
     def post_message(self, m):
         raise NotImplementedError()
-        for receiver in m.receivers:
-            self.browser.send_mail(m.sender, receiver, m.title, m.content)
 
     def make_message(self, d, thread):
         m = Message(thread, d['id'])

@@ -20,8 +20,10 @@ class Videoobmc(Weboobmc):
 
         fields = ['id', 'title', 'date', 'description', 'author', 'duration', 'thumbnail', 'url']
         try:
-            for video in self.weboob.do(self._do_complete, self.count, fields, 'search_videos', **kwargs):
-                yield video
+            yield from self.weboob.do(
+                self._do_complete, self.count, fields, 'search_videos', **kwargs
+            )
+
         except Exception as e:
             print(e)
 

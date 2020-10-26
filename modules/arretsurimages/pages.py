@@ -33,9 +33,8 @@ class IndexPage(Page):
         videos = self.document.getroot().cssselect("div[class=bloc-contenu-8]")
         for div in videos:
             title = self.parser.select(div, 'h1', 1).text_content().replace('  ', ' ')
-            if pattern:
-                if pattern.upper() not in title.upper():
-                    continue
+            if pattern and pattern.upper() not in title.upper():
+                continue
             m = re.match(r'/contenu.php\?id=(.*)', div.find('a').attrib['href'])
             _id = ''
             if m:
@@ -81,12 +80,10 @@ class VideoPage(Page):
 
     def get_firstUrl(self):
         obj = self.parser.select(self.document.getroot(), 'a.bouton-telecharger', 1)
-        firstUrl = obj.attrib['href']
-        return firstUrl
+        return obj.attrib['href']
 
     def get_title(self):
-        title = self.document.getroot().cssselect('div[id=titrage-contenu] h1')[0].text
-        return title
+        return self.document.getroot().cssselect('div[id=titrage-contenu] h1')[0].text
 
     def get_id(self):
         m = re.match(r'http://videos.arretsurimages.net/telecharger/(.*)', self.get_firstUrl())
@@ -100,12 +97,10 @@ class VideoPage(Page):
         doc = self.browser.get_document(self.browser.openurl(firstUrl))
         links = doc.xpath('//a')
         url = None
-        i = 1
-        for link in links:
+        for i, link in enumerate(links, start=1):
             # we take the second link of the page
             if i == 2:
                 url = link.attrib['href']
-            i += 1
         return url
 
 

@@ -34,10 +34,10 @@ class TokenExtractor(object):
     def element_iterated_already(self, html_element):
         if html_element in self.iterated_elements:
             return True
-        for ancestor in html_element.iterancestors():
-            if ancestor in self.iterated_elements:
-                return True
-        return False
+        return any(
+            ancestor in self.iterated_elements
+            for ancestor in html_element.iterancestors()
+        )
 
     def extract_tokens(self, html_element):
         if self.element_iterated_already(html_element):
@@ -52,8 +52,7 @@ class TokenExtractor(object):
 
     @staticmethod
     def split_text_into_smaller_tokens(text):
-        for subtext1 in text.split('\t'):
-            yield subtext1
+        yield from text.split('\t')
 
     @staticmethod
     def token_looks_relevant(token):

@@ -27,10 +27,7 @@ class AntiSpam(object):
         # Check if there is an email address in the offer.
         if re.match('^[\w\d\.\-_]+@[\w\d\.]+ vous offre la pos', resume):
             return False
-        if thread['who']['pseudo'] == 'Ekaterina':
-            return False
-
-        return True
+        return thread['who']['pseudo'] != 'Ekaterina'
 
     def check_profile(self, profile):
         # The name of profile is in form #123456789
@@ -130,6 +127,4 @@ class AntiSpam(object):
 
         if mail['message'].find('Je veux que vous m\'ayez ecrit directement sur le mon e-mail') >= 0:
             return False
-        if mail['message'].find('ilusa12010@live.fr') >= 0:
-            return False
-        return True
+        return mail['message'].find('ilusa12010@live.fr') < 0

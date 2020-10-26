@@ -77,11 +77,8 @@ class LCLBrowser(LoginBrowser):
     @need_login
     def get_history(self, account):
         self.location(account._link_id)
-        for tr in self.page.get_operations():
-            yield tr
-
-        for tr in self.get_cb_operations(account, 1):
-            yield tr
+        yield from self.page.get_operations()
+        yield from self.get_cb_operations(account, 1)
 
     @need_login
     def get_cb_operations(self, account, month=0):
@@ -98,13 +95,10 @@ class LCLBrowser(LoginBrowser):
 
             self.location('%s?%s' % (v.path, urllib.urlencode(args)))
 
-            for tr in self.page.get_operations():
-                yield tr
-
+            yield from self.page.get_operations()
             for card_link in self.page.get_cards():
                 self.location(card_link)
-                for tr in self.page.get_operations():
-                    yield tr
+                yield from self.page.get_operations()
 
 
 class LCLProBrowser(LCLBrowser):

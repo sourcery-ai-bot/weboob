@@ -10,10 +10,7 @@ else:
 class BaseMenuItem():
 
     def __init__(self, name, action, iconimage="DefaultFolder.png"):
-        self.params = {}
-        self.params['name'] = name
-        self.params['action'] = action
-        self.params['iconimage'] = iconimage
+        self.params = {'name': name, 'action': action, 'iconimage': iconimage}
 
     def get(self, element):
         return self.params[element]

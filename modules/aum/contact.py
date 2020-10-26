@@ -136,10 +136,7 @@ class FieldConst(FieldBase):
             except KeyError:
                 return ''
         elif isinstance(v, (tuple,list)):
-            labels = []
-            for i in v:
-                labels.append(consts[self.key][i])
-            return labels
+            return [consts[self.key][i] for i in v]
 
 
 class Contact(_Contact):

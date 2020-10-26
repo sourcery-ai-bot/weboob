@@ -54,7 +54,7 @@ class ArticlePage(GenericNewsPage):
 
         # This part of the article seems manually generated.
         for crappy_title in self.parser.select(element_body, 'p strong'):
-            if crappy_title.text == 'LIRE AUSSI :' or crappy_title.text == 'LIRE AUSSI:':
+            if crappy_title.text in ['LIRE AUSSI :', 'LIRE AUSSI:']:
                 # Remove if it has only links
                 for related in crappy_title.getparent().itersiblings(tag='p'):
                     if len(related) == len(list(related.iterchildren(tag='a'))):

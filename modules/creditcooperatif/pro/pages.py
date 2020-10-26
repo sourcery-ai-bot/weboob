@@ -50,11 +50,11 @@ class AccountsPage(Page):
     CPT_ROW_ENCOURS = 4
 
     def is_error(self):
-        for par in self.document.xpath('//p[@class=acctxtnoirlien]'):
-            if par.text is not None and u"La page demandée ne peut pas être affichée." in par.text:
-                return True
-
-        return False
+        return any(
+            par.text is not None
+            and u"La page demandée ne peut pas être affichée." in par.text
+            for par in self.document.xpath('//p[@class=acctxtnoirlien]')
+        )
 
     def get_list(self):
         for trCompte in self.document.xpath('//table[@id="compte"]/tbody/tr'):

@@ -45,10 +45,7 @@ class MediawikiModule(Module, CapContent):
 
     def create_default_browser(self):
         username = self.config['username'].get()
-        if len(username) > 0:
-            password = self.config['password'].get()
-        else:
-            password = None
+        password = self.config['password'].get() if len(username) > 0 else None
         return self.create_browser(self.config['url'].get(),
                                    self.config['apiurl'].get(),
                                    username, password)

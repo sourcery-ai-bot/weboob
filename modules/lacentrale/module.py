@@ -64,8 +64,7 @@ class LaCentraleModule(Module, CapPriceComparison):
             #print criteria
         # browse product
         with self.browser:
-            for product in self.browser.iter_products(criteria):
-                yield product
+            yield from self.browser.iter_products(criteria)
 
     # inherited from CapPriceComparison
     def iter_prices(self, product):

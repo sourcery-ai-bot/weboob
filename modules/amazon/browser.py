@@ -103,7 +103,7 @@ class Amazon(LoginBrowser):
         Amazon throws 500 HTTP status code for apparently valid requests
         from time to time. Requests eventually succeed after retrying.
         """
-        for i in xrange(self.MAX_RETRIES):
+        for _ in xrange(self.MAX_RETRIES):
             try:
                 return super(Amazon, self).location(*args, **kwargs)
             except ServerError as e:

@@ -91,9 +91,7 @@ class AmericanExpressBrowser(Browser):
 
             assert self.is_on_page(TransactionsPage)
 
-            for tr in self.page.get_history():
-                yield tr
-
+            yield from self.page.get_history()
             if self.page.is_last():
                 url = None
             else:

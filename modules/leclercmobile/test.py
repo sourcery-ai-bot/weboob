@@ -52,7 +52,5 @@ class LeclercMobileTest(BackendTest):
         for subscription in self.backend.iter_subscription():
             details = list(self.backend.get_details(subscription))
             self.assertTrue(len(details) > 5, msg="Not enough details")
-            total = 0
-            for d in details:
-                total += d.price
+            total = sum(d.price for d in details)
             self.assertTrue(total > 0, msg="Parsing of price failed")

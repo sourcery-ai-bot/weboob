@@ -262,10 +262,7 @@ class IndexPage(Page):
             i = min(len(tds) - 4, 1)
 
             if tr.attrib.get('class', '') == 'DataGridHeader':
-                if tds[2].text == u'Titulaire':
-                    ignore = True
-                else:
-                    ignore = False
+                ignore = tds[2].text == u'Titulaire'
                 continue
 
             if ignore:

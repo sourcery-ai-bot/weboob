@@ -89,7 +89,7 @@ class AccountsList(Page):
             for account in self._parse_account_group(table):
                 l.append(account)
 
-        if len(l) == 0:
+        if not l:
             # oops, no accounts? check if we have not exhausted the allowed use
             # of this password
             for img in self.document.getroot().cssselect('img[align="middle"]'):

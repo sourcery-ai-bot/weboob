@@ -88,21 +88,25 @@ class VideoobWeb(Application):
     def index(self, req):
         c = {}
         nsfw = req.params.get('nsfw')
-        nsfw = False if not nsfw or nsfw == '0' else True
+        nsfw = bool(nsfw and nsfw != '0')
         q = req.params.get('q', u'')
         merge = req.params.get('merge')
-        merge = False if not merge or merge == '0' else True
+        merge = bool(merge and merge != '0')
         c['merge'] = merge
         c['form_data'] = dict(q=q)
         c['results'] = [] if merge else {}
         if q:
             for backend in self.weboob.iter_backends():
-                videos = [dict(title=video.title,
-                               page_url=video.page_url,
-                               url=video.url if video.url else '/download?id=%s' % video.id,
-                               thumbnail_url=video.thumbnail.url,
-                             )
-                         for video in backend.search_videos(pattern=q, nsfw=nsfw)]
+                videos = [
+                    dict(
+                        title=video.title,
+                        page_url=video.page_url,
+                        url=video.url or '/download?id=%s' % video.id,
+                        thumbnail_url=video.thumbnail.url,
+                    )
+                    for video in backend.search_videos(pattern=q, nsfw=nsfw)
+                ]
+
                 if videos:
                     if merge:
                         c['results'].extend(videos)

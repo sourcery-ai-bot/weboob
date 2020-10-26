@@ -47,9 +47,8 @@ class PdfPage():
         pdffile.flush()
         subprocess.call([cmd, pdffile.name, temptxt], stdout=stdout)
         pdffile.close()
-        txtfile = open(temptxt, 'r')
-        txt = txtfile.read()
-        txtfile.close()
+        with open(temptxt, 'r') as txtfile:
+            txt = txtfile.read()
         os.remove(temptxt)
         return txt
 

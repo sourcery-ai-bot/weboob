@@ -64,7 +64,7 @@ class AccountsList(Page):
                     account.id = self.browser.get_IBAN_from_account(account)
                 l.append(account)
 
-        if len(l) == 0:
+        if not l:
             self.logger.warning('no accounts')
             # oops, no accounts? check if we have not exhausted the allowed use
             # of this password

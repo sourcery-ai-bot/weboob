@@ -48,10 +48,7 @@ class ReleasePage(Page):
                 else:
                     date = unicode(self.parser.select(a.getparent().getparent().getparent(), 'td')[1].text_content())
                 result += '%s : %s\n' % (country, date)
-        if result == u'':
-            result = NotAvailable
-        else:
-            result = result.strip()
+        result = NotAvailable if result == u'' else result.strip()
         return result
 
 
@@ -78,7 +75,7 @@ class MovieCrewPage(Page):
     '''
 
     def iter_persons(self, role_filter=None):
-        if (role_filter is None or (role_filter is not None and role_filter == 'actor')):
+        if role_filter is None or role_filter == 'actor':
             tables = self.parser.select(self.document.getroot(), 'table.cast_list')
             if len(tables) > 0:
                 table = tables[0]
@@ -103,7 +100,7 @@ class MovieCrewPage(Page):
 
         for gloss_link in self.parser.select(self.document.getroot(), 'table[cellspacing="1"] h5 a'):
             role = gloss_link.attrib.get('name', '').rstrip('s')
-            if (role_filter is None or (role_filter is not None and role == role_filter)):
+            if role_filter is None or role == role_filter:
                 tbody = gloss_link.getparent().getparent().getparent().getparent()
                 for line in self.parser.select(tbody, 'tr')[1:]:
                     for a in self.parser.select(line, 'a'):
@@ -202,11 +199,16 @@ class PersonPage(Page):
         roles = {}
         for role_div in self.parser.select(self.document.getroot(), 'div#filmography > div.head'):
             role = self.parser.select(role_div, 'a')[-1].text
-            roles[role] = []
             category = role_div.attrib.get('data-category')
-            for infos in self.parser.select(self.document.getroot(), 'div#filmography > div.filmo-category-section > div'):
-                if category in infos.attrib.get('id'):
-                    roles[role].append(('N/A',infos.text_content().replace('\n', ' ').strip()))
+            roles[role] = [
+                ('N/A', infos.text_content().replace('\n', ' ').strip())
+                for infos in self.parser.select(
+                    self.document.getroot(),
+                    'div#filmography > div.filmo-category-section > div',
+                )
+                if category in infos.attrib.get('id')
+            ]
+
         return roles
 
     def iter_movies(self, role_filter=None):
